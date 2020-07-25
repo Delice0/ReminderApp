@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuiItem_bottomnavigation_todo"
+        android:icon="@drawable/image_calendar"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/menuItem_bottomnavigation_add"
+        android:icon="@drawable/image_add"
+        android:title="Add"/>
+
+    <item
+        android:id="@+id/menuItem_bottomnavigation_done"
+        android:icon="@drawable/image_done"
+        android:title="Done" />
+
+</menu>

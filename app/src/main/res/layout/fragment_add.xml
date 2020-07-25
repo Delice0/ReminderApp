@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.AddFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/addFrag_second_relativelayout"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="50dp"
+        android:text="Create a TODO"
+        android:textSize="40sp" />
+
+    <RelativeLayout
+        android:id="@+id/addFrag_second_relativelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="50dp">
+
+        <EditText
+            android:id="@+id/addFrag_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="Title here..." />
+
+        <EditText
+            android:id="@+id/addFrag_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addFrag_title"
+            android:layout_marginBottom="20dp"
+            android:hint="Description here..." />
+
+        <RelativeLayout
+            android:id="@+id/addFrag_third_relativelayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addFrag_description">
+
+            <TextView
+                android:id="@+id/addFrag_priority_simpletext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Select priority: " />
+
+            <Spinner
+                android:id="@+id/addFrag_dropdown_priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@id/addFrag_priority_simpletext"
+                android:spinnerMode="dropdown" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/addFrag_calender"
+            android:layout_below="@id/addFrag_third_relativelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/image_calendar"
+            android:text="Select date"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/addFrag_create_todo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFrag_second_relativelayout"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:text="Finish"
+        android:textAllCaps="false" />
+
+</RelativeLayout>
+
