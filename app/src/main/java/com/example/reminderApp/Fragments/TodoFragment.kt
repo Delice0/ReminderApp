@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.reminderApp.Adapters.DepTodoRecyclerViewAdapter
 import com.example.reminderApp.Adapters.TodoRecyclerViewAdapter
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
@@ -63,7 +64,6 @@ class TodoFragment : Fragment() {
         // Swipe functionality
         val itemtouchHelper = ItemTouchHelper(activateItemTouchSwipe())
         itemtouchHelper.attachToRecyclerView(recyclerView)
-
     }
 
     private fun activateCheckBox(ch: CheckBox, i: Int) {
