@@ -1,13 +1,18 @@
 package com.example.reminderApp.ViewHolders
 
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
 
-class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view) {
+@Deprecated("This is deprecated", ReplaceWith("TodoViewHolder()"))
+class DepTodoViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
+    RecyclerView.ViewHolder(inflater.inflate(R.layout.todo_custom_recyclerview, parent, false)) {
+
     private var title: TextView? = null
     private var description: TextView? = null
     private var priority: TextView? = null
@@ -24,15 +29,16 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
         checkbox = itemView.findViewById(R.id.todo_custom_checkbox)
     }
 
-    override fun bind(item: Todo, listener: TodoItemListener?) {
-        title?.text = item.title
-        description?.text = item.description
-        priority?.text = item.priority
-        created?.text = item.createdDate
-        duedate?.text = item.dueDate
-        checkbox?.isChecked = item.isDone
+    fun bind(todo: Todo, listener: TodoItemListener) {
+        title?.text = todo.title
+        description?.text = todo.description
+        priority?.text = todo.priority
+        created?.text = todo.createdDate
+        duedate?.text = todo.dueDate
+        checkbox?.isChecked = todo.isDone
 
-        itemView.setOnClickListener { listener?.onClickItem(itemView, adapterPosition) }
-        checkbox?.setOnClickListener { listener?.onClickItem(checkbox!!, adapterPosition) }
+        itemView.setOnClickListener { listener.onClickItem(itemView, adapterPosition) }
+        checkbox?.setOnClickListener { listener.onClickItem(checkbox!!, adapterPosition) }
     }
+
 }
