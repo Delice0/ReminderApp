@@ -7,7 +7,6 @@ import com.example.reminderApp.Fragments.DoneFragment
 import com.example.reminderApp.Fragments.TodoFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import org.slf4j.LoggerFactory
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -15,7 +14,6 @@ import timber.log.Timber.DebugTree
 class MainActivity : AppCompatActivity() {
     private val todoFragment = TodoFragment()
     private val doneFragment = DoneFragment()
-    private var LOG = LoggerFactory.getLogger(MainActivity::class.simpleName)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +24,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             Timber.plant(Timber.asTree())
         }
-
-        // TODO: Fix log!
-        LOG.info("Beginning transaction...")
 
         // Set which fragment to start application
         supportFragmentManager.beginTransaction()
