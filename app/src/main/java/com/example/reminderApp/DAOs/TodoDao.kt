@@ -20,6 +20,7 @@ interface TodoDao {
     @Delete
     fun delete(todo: Todo)
 
+    @Ignore
     @Query("SELECT * FROM todo_table WHERE is_done = 1")
     fun getAllDoneTodos(): LiveData<List<Todo>>
 

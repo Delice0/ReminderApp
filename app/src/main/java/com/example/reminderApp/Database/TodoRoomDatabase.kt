@@ -7,8 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.reminderApp.DAOs.TodoDao
 import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.Utils.DateUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @Database(entities = [Todo::class], version = 1, exportSchema = false)
 abstract class TodoRoomDatabase : RoomDatabase() {
@@ -21,9 +23,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
         fun getDatabase(context: Context, scope: CoroutineScope): TodoRoomDatabase {
             val tempInstance = INSTANCE
 
-            if (tempInstance != null) {
-                return tempInstance
-            }
+            if (tempInstance != null) return tempInstance
 
             synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -57,19 +57,46 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             todoDao.deleteAllTodos()
 
             // Add samples
-            val todo1 = Todo("Pick peter", "Pick peter from school", "8", "02-12-2020", "01-12-2020")
+            val todo1 = Todo(
+                "Pick peter",
+                "Pick peter from school",
+                "8",
+                "02-12-2020",
+                "01-12-2020")
             todo1.isDone = false
 
-            val todo2 = Todo("Drin cola", "Drink 10 liters of cola", "4", "02-12-2010", "01-12-2020")
+            val todo2 = Todo(
+                "Drin cola",
+                "Drink 10 liters of cola",
+                "4",
+                "02-12-2010",
+                "01-12-2020")
             todo2.isDone = false
 
-            val todo3 = Todo("Homework", "Do homework before school", "2", "02-12-2005", "01-12-2020")
+            val todo3 = Todo(
+                "Homework",
+                "Do homework before school",
+                "2",
+                "02-12-2005",
+                "01-12-2020")
             todo3.isDone = false
 
-            val todo4 = Todo("TEST DONE", "TESTETETET", "5", "02-12-2005", "01-12-2020")
+            val todo4 = Todo(
+                "TEST DONE",
+                "TESTETETET",
+                "5",
+                "02-12-2005",
+                "01-12-2020")
+            todo4.doneDate = DateUtil.dateFormat(LocalDate.now().plusDays(5))
             todo4.isDone = true
 
-            val todo5 = Todo("TEST DONE 2", "TESTETETET", "5", "02-12-2005", "01-12-2020")
+            val todo5 = Todo(
+                "TEST DONE 2",
+                "TESTETETET",
+                "5",
+                "02-12-2005",
+                "01-12-2020")
+            todo5.doneDate = DateUtil.dateFormat(LocalDate.now())
             todo5.isDone = true
 
             todoDao.insert(todo1, todo2, todo3, todo4, todo5)
