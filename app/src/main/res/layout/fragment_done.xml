@@ -5,9 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.DoneFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/doneFrag_recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/doneFrag_clearButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CLEAR LIST"
+            android:clickable="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/doneFrag_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/doneFrag_clearButton" />
+
+    </RelativeLayout>
 
 </FrameLayout>

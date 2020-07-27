@@ -25,5 +25,8 @@ interface TodoDao {
     fun getAllDoneTodos(): LiveData<List<Todo>>
 
     @Update
-    suspend fun update(todo: Todo)
+    suspend fun finish(todo: Todo)
+
+    @Query("DELETE FROM todo_table WHERE is_done = 1")
+    fun deleteDoneTodos()
 }

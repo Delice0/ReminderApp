@@ -33,5 +33,4 @@ class DoneTodoRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder<*, TodoI
         this.doneTodos = todo
         notifyDataSetChanged()
     }
-
 }

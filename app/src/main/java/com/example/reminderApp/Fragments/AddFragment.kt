@@ -21,19 +21,16 @@ import timber.log.Timber
 import java.time.LocalDateTime
 import java.util.*
 
+private const val SELECT_DATE: String = "Select date"
+
 class AddFragment : DialogFragment() {
     private lateinit var mViewModel: TodoViewModel
 
-    private val SELECT_DATE = "Select date"
-
     private var pickedDateTime = ""
     private var pickedPriority = ""
+    private var priorities: Array<String>? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add, container, false)
     }
 
@@ -42,7 +39,7 @@ class AddFragment : DialogFragment() {
 
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
 
-        val priorities = resources.getStringArray(R.array.priorities)
+        priorities = resources.getStringArray(R.array.priorities)
 
         // Views
         val dropdown = view.findViewById<Spinner>(R.id.addFrag_dropdown_priority)
@@ -52,58 +49,61 @@ class AddFragment : DialogFragment() {
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                priorities
-            )
+                priorities!!)
+
             dropdown.adapter = adapter
         }
 
-        addFrag_calender.setOnClickListener { getDateTimePicker() }
-
-        addFrag_dropdown_priority.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    pickedPriority = priorities[position]
-                }
-            }
-
-        // Finish creating the todo listener
-        addFrag_create_todo.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                if (pickedPriority.isEmpty()) {
-
-                    // Set default value for priority
-                    pickedPriority = priorities[0]
-                }
-
-                val todo = Todo(
-                    addFrag_title.editableText.toString(),
-                    addFrag_description.editableText.toString(),
-                    pickedPriority,
-                    pickedDateTime,
-                    DateUtil.dateTimeFormat(LocalDateTime.now())
-                )
-
-                Timber.i("Validating fields...")
-                if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid()) {
-                    Timber.i("Inserting TODO ${todo}")
-                    mViewModel.insert(todo)
-
-                    dismiss()
-
-                    Toast.makeText(requireContext(), "Created todo!", Toast.LENGTH_LONG).show()
-                }
-            }
-        })
+        initializeListeners()
     }
 
-    private fun getDateTimePicker() {
+    private fun initializeListeners() {
+        addFrag_calender.setOnClickListener { activateDateTimePicker() }
+        addFrag_create_todo.setOnClickListener { activateCreateTodo() }
+        addFrag_dropdown_priority.onItemSelectedListener = activatePriority()
+    }
+
+    private fun activatePriority() = object : AdapterView.OnItemSelectedListener{
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            pickedPriority = priorities!![position]
+        }
+    }
+
+    private fun activateCreateTodo() {
+        if (!hasUserPickedPriority()) {
+
+            // Set default value for priority
+            pickedPriority = priorities!![0]
+        }
+
+        // Create a todoObject from users selections
+        val todo = Todo(
+            addFrag_title.editableText.toString(),
+            addFrag_description.editableText.toString(),
+            pickedPriority,
+            pickedDateTime,
+            DateUtil.dateTimeFormat(LocalDateTime.now())
+        )
+
+        // TODO: Show error message to show user which field is not valid
+        Timber.i("Validating fields...")
+        if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid()) {
+            Timber.i("Inserting TODO $todo")
+            mViewModel.insert(todo)
+
+            dismiss()
+
+            Toast.makeText(requireContext(), "Created todo!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun hasUserPickedPriority(): Boolean {
+        return pickedPriority.isNotEmpty()
+    }
+
+    private fun activateDateTimePicker() {
         val instance = Calendar.getInstance()
         val startYear = instance.get(Calendar.YEAR)
         val startMonth = instance.get(Calendar.MONTH)
@@ -119,8 +119,7 @@ class AddFragment : DialogFragment() {
                                 month + 1,
                                 day,
                                 hour,
-                                minute
-                            ))
+                                minute))
                     addFrag_calender.text = pickedDateTime
                 }, startHour, startMinute, true).show()
             }, startYear, startMonth, startDay).show()

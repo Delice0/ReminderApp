@@ -1,7 +1,7 @@
 package com.example.reminderApp.ViewHolders
 
 import android.view.View
-import android.widget.CheckBox
+import android.widget.Button
 import android.widget.TextView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
