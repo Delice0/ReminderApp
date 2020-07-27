@@ -1,7 +1,9 @@
 package com.example.reminderApp.ViewModels
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.reminderApp.Database.TodoRoomDatabase
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.Repositories.TodoRepository
@@ -9,8 +11,6 @@ import com.example.reminderApp.Utils.DateUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.stream.Collector
-import java.util.stream.Collectors
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository
@@ -36,12 +36,16 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         repository.delete(position)
     }
 
-    fun update(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        setDone(position)
-        repository.update(position)
+    fun finish(position: Int) = viewModelScope.launch(Dispatchers.IO) {
+        updateTodo(position)
+        repository.finish(position)
     }
 
-    private fun setDone(position: Int) {
+    fun deleteAllDoneTodos() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteDoneTodos()
+    }
+
+    private fun updateTodo(position: Int) {
         allTodos.value?.get(position).let {
             it?.doneDate = DateUtil.dateFormat(LocalDate.now())
             it?.isDone = true

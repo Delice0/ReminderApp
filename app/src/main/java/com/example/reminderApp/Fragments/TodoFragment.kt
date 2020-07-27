@@ -1,6 +1,5 @@
 package com.example.reminderApp.Fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.reminderApp.Adapters.DepTodoRecyclerViewAdapter
 import com.example.reminderApp.Adapters.TodoRecyclerViewAdapter
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
+import com.example.reminderApp.Utils.AlertUtil
 import com.example.reminderApp.Utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
+import kotlinx.android.synthetic.main.todo_custom_recyclerview.view.*
 import timber.log.Timber
 
 @Suppress("NAME_SHADOWING")
@@ -28,11 +28,9 @@ class TodoFragment : Fragment() {
     private lateinit var mViewModel: TodoViewModel
     private lateinit var mAdapter: TodoRecyclerViewAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_todo, container, false)
     }
 
@@ -45,7 +43,8 @@ class TodoFragment : Fragment() {
 
         mAdapter.itemClicked(TodoItemListener { view, i ->
             when (view) {
-                is CheckBox -> activateCheckBox(view, i)
+                recyclerView.findViewHolderForAdapterPosition(i)?.itemView?.todo_custom_checkbox -> {
+                    activateCheckBox(view as CheckBox, i) }
                 is LinearLayout -> Timber.i("$view $i")
             }
         })
@@ -68,18 +67,16 @@ class TodoFragment : Fragment() {
 
     private fun activateCheckBox(ch: CheckBox, i: Int) {
         if (ch.isChecked) {
-            buildAlertPopup("Confirmation", "Done?")
+            AlertUtil.buildAlertPopup(view!!, AlertUtil.Titles.CONFIRMATION.title, "Done?")
                 .setPositiveButton("YES") { dialog, which ->
                     ToastUtil.shortToast(requireContext(), "Updating...${i}")
 
-                    mViewModel.update(i)
-                    mAdapter.notifyDataSetChanged()
-                }
+                    mViewModel.finish(i)
+                    mAdapter.notifyDataSetChanged() }
                 .setNegativeButton("CANCEL") { dialog, which ->
                     ToastUtil.shortToast(requireContext(), "Cancelled..")
 
-                    ch.isChecked = false
-                }
+                    ch.isChecked = false }
                 .show()
         }
     }
@@ -95,36 +92,17 @@ class TodoFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val builder =
-                    buildAlertPopup("Confirmation", "Are you sure that you wanna delete this todo?")
+                AlertUtil.buildAlertPopup(view!!, AlertUtil.Titles.CONFIRMATION.title,
+                    "Are you sure that you wanna delete this todo?")
+                    .setPositiveButton("DELETE") { dialog, which ->
+                        mViewModel.delete(viewHolder.adapterPosition)
 
-                builder.setPositiveButton("DELETE") { dialog, which ->
-                    mViewModel.delete(viewHolder.adapterPosition)
-
-                    Toast.makeText(
-                        requireContext(),
-                        "Deleted following todo succesfully!",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                builder.setNegativeButton("CANCEL") { dialog, which ->
-                    mAdapter.notifyItemChanged(viewHolder.adapterPosition)
-
-                    ToastUtil.shortToast(requireContext(), "Cancelled..")
-                }
-
-                builder.show()
+                        Toast.makeText(requireContext(), "Deleted following todo succesfully!",
+                        Toast.LENGTH_LONG).show() }
+                    .setNegativeButton("CANCEL") { dialog, which ->
+                        mAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                        ToastUtil.shortToast(requireContext(), "Cancelled..") }
+                    .show()
             }
         }
-
-    private fun buildAlertPopup(
-        title: String,
-        message: String
-    ): AlertDialog.Builder {
-        return AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-    }
-
 }
