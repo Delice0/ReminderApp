@@ -31,7 +31,7 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
     override fun bind(item: Todo, listener: TodoItemListener?) {
         title?.text = item.title
         description?.text = item.description
-        priority?.text = item.priority
+        priority?.text = item.priority.toString()
 
         // Simplify datetime in UI
         created?.text = item.createdDate.format(DateUtil.dateTimeFormat_simple)

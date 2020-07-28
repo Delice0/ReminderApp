@@ -33,7 +33,7 @@ class DepTodoViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     fun bind(todo: Todo, listener: TodoItemListener) {
         title?.text = todo.title
         description?.text = todo.description
-        priority?.text = todo.priority
+        priority?.text = todo.priority.toString()
         created?.text = todo.createdDate.format(DateUtil.dateTimeFormat_simple)
         duedate?.text = todo.dueDate.format(DateUtil.dateTimeFormat_simple)
         checkbox?.isChecked = todo.isDone

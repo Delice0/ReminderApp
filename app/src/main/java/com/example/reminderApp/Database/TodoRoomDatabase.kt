@@ -62,7 +62,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             val todo1 = Todo(
                 "Pick peter",
                 "Pick peter from school",
-                "8",
+                8,
                 LocalDateTime.of(2005,10,5, 10, 50),
                 LocalDateTime.of(2005,10,5, 10, 50))
             todo1.isDone = false
@@ -70,7 +70,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             val todo2 = Todo(
                 "Drin cola",
                 "Drink 10 liters of cola",
-                "4",
+                4,
                 LocalDateTime.of(2005,10,5, 10, 50),
                 LocalDateTime.of(2005,10,5, 10, 50))
             todo2.isDone = false
@@ -78,7 +78,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             val todo3 = Todo(
                 "Homework",
                 "Do homework before school",
-                "2",
+                2,
                 LocalDateTime.of(2005,10,5, 10, 50),
                 LocalDateTime.of(2005,10,5, 10, 50))
             todo3.isDone = false
@@ -86,7 +86,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             val todo4 = Todo(
                 "TEST DONE",
                 "TESTETETET",
-                "5",
+                5,
                 LocalDateTime.of(2005,10,5, 10, 50),
                 LocalDateTime.of(2005,10,5, 10, 50))
             todo4.doneDate = LocalDateTime.now().plusDays(5)
@@ -95,7 +95,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             val todo5 = Todo(
                 "TEST DONE 2",
                 "TESTETETET",
-                "5",
+                5,
                 LocalDateTime.of(2005,10,5, 10, 50),
                 LocalDateTime.of(2005,10,5, 10, 50))
             todo5.doneDate = LocalDateTime.now()

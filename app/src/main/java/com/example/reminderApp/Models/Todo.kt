@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class Todo(
     val title: String,
     val description: String,
-    val priority: String,
+    val priority: Int,
     @ColumnInfo(name = "due_date")
     val dueDate: LocalDateTime,
     @ColumnInfo(name = "created_date")
