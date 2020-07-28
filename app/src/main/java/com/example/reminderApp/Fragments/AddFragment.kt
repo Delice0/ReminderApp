@@ -52,10 +52,9 @@ class AddFragment : DialogFragment() {
                 R.layout.support_simple_spinner_dropdown_item,
                 priorities!!.toList()
             )
-
             dropdown.adapter = adapter
         }
-
+        
         initializeListeners()
     }
 
