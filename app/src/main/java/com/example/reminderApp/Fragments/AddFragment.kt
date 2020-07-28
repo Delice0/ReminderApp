@@ -54,7 +54,7 @@ class AddFragment : DialogFragment() {
             )
             dropdown.adapter = adapter
         }
-        
+
         initializeListeners()
     }
 
