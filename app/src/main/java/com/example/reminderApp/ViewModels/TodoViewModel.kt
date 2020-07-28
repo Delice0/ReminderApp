@@ -11,6 +11,7 @@ import com.example.reminderApp.Utils.DateUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository
@@ -47,7 +48,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun updateTodo(position: Int) {
         allTodos.value?.get(position).let {
-            it?.doneDate = DateUtil.dateFormat(LocalDate.now())
+            it?.doneDate = LocalDateTime.now()
             it?.isDone = true
         }
     }

@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
+import com.example.reminderApp.Utils.DateUtil
 
 class DoneTodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view) {
     private var title: TextView? = null
@@ -18,6 +19,6 @@ class DoneTodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(v
 
     override fun bind(item: Todo, listener: TodoItemListener?) {
         title?.text = item.title
-        doneDate?.text = item.doneDate
+        doneDate?.text = item.doneDate!!.format(DateUtil.dateTimeFormat_simple)
     }
 }

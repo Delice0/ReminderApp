@@ -3,6 +3,7 @@ package com.example.reminderApp.Models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
 @Entity(tableName = "todo_table")
 data class Todo(
@@ -10,9 +11,9 @@ data class Todo(
     val description: String,
     val priority: String,
     @ColumnInfo(name = "due_date")
-    val dueDate: String,
+    val dueDate: LocalDateTime,
     @ColumnInfo(name = "created_date")
-    val createdDate: String
+    val createdDate: LocalDateTime
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todoId")
@@ -20,5 +21,5 @@ data class Todo(
     @ColumnInfo(name = "is_done")
     var isDone: Boolean = false
     @ColumnInfo(name = "done_date")
-    var doneDate: String = ""
+    var doneDate: LocalDateTime? = null
 }

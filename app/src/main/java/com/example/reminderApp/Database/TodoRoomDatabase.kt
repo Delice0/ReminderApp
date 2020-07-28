@@ -4,15 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.reminderApp.Converters.LocalDateTimeConverter
 import com.example.reminderApp.DAOs.TodoDao
 import com.example.reminderApp.Models.Todo
-import com.example.reminderApp.Utils.DateUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Database(entities = [Todo::class], version = 1, exportSchema = false)
+@TypeConverters(LocalDateTimeConverter::class)
 abstract class TodoRoomDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao
 
@@ -61,42 +63,42 @@ abstract class TodoRoomDatabase : RoomDatabase() {
                 "Pick peter",
                 "Pick peter from school",
                 "8",
-                "02-12-2020",
-                "01-12-2020")
+                LocalDateTime.of(2005,10,5, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
             todo1.isDone = false
 
             val todo2 = Todo(
                 "Drin cola",
                 "Drink 10 liters of cola",
                 "4",
-                "02-12-2010",
-                "01-12-2020")
+                LocalDateTime.of(2005,10,5, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
             todo2.isDone = false
 
             val todo3 = Todo(
                 "Homework",
                 "Do homework before school",
                 "2",
-                "02-12-2005",
-                "01-12-2020")
+                LocalDateTime.of(2005,10,5, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
             todo3.isDone = false
 
             val todo4 = Todo(
                 "TEST DONE",
                 "TESTETETET",
                 "5",
-                "02-12-2005",
-                "01-12-2020")
-            todo4.doneDate = DateUtil.dateFormat(LocalDate.now().plusDays(5))
+                LocalDateTime.of(2005,10,5, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
+            todo4.doneDate = LocalDateTime.now().plusDays(5)
             todo4.isDone = true
 
             val todo5 = Todo(
                 "TEST DONE 2",
                 "TESTETETET",
                 "5",
-                "02-12-2005",
-                "01-12-2020")
-            todo5.doneDate = DateUtil.dateFormat(LocalDate.now())
+                LocalDateTime.of(2005,10,5, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
+            todo5.doneDate = LocalDateTime.now()
             todo5.isDone = true
 
             todoDao.insert(todo1, todo2, todo3, todo4, todo5)
