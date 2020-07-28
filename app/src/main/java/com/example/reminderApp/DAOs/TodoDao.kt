@@ -11,8 +11,8 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg todo: Todo)
 
-    @Query("SELECT * FROM todo_table WHERE is_done = 0 ORDER BY priority ASC")
-    fun getAllTodosByPriority(): LiveData<List<Todo>>
+    @Query("SELECT * FROM todo_table WHERE is_done = 0 ORDER BY due_date ASC")
+    fun getAllTodos(): LiveData<List<Todo>>
 
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllTodos()

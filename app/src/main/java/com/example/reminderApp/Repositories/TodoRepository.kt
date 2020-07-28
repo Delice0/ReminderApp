@@ -6,7 +6,7 @@ import com.example.reminderApp.Models.Todo
 
 class TodoRepository(private val todoDao: TodoDao) {
 
-    val allTodos: LiveData<List<Todo>> = todoDao.getAllTodosByPriority()
+    val allTodos: LiveData<List<Todo>> = todoDao.getAllTodos()
     val allDoneTodos: LiveData<List<Todo>> = todoDao.getAllDoneTodos()
 
     suspend fun insert(todo: Todo) {
