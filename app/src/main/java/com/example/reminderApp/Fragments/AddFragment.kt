@@ -28,8 +28,8 @@ class AddFragment : DialogFragment() {
     private lateinit var mViewModel: TodoViewModel
 
     private var pickedDateTime: LocalDateTime? = null
-    private var pickedPriority = ""
-    private var priorities: Array<String>? = null
+    private var pickedPriority = 0
+    private var priorities: IntArray? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add, container, false)
@@ -40,7 +40,7 @@ class AddFragment : DialogFragment() {
 
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
 
-        priorities = resources.getStringArray(R.array.priorities)
+        priorities = resources.getIntArray(R.array.priorities)
 
         // Views
         val dropdown = view.findViewById<Spinner>(R.id.addFrag_dropdown_priority)
@@ -49,9 +49,9 @@ class AddFragment : DialogFragment() {
         if (dropdown != null) {
             val adapter = ArrayAdapter(
                 requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                priorities!!)
-
+                R.layout.support_simple_spinner_dropdown_item,
+                priorities!!.toList()
+            )
             dropdown.adapter = adapter
         }
 
@@ -73,11 +73,6 @@ class AddFragment : DialogFragment() {
     }
 
     private fun activateCreateTodo() {
-        if (!hasUserPickedPriority()) {
-            // Set default value for priority
-            pickedPriority = priorities!![0]
-        }
-
         // Create a todoObject from users selections
         val todo = Todo(
             addFrag_title.editableText.toString(),
@@ -97,10 +92,6 @@ class AddFragment : DialogFragment() {
 
             Toast.makeText(requireContext(), "Created todo!", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun hasUserPickedPriority(): Boolean {
-        return pickedPriority.isNotEmpty()
     }
 
     private fun activateDateTimePicker() {
