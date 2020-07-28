@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
+import com.example.reminderApp.Utils.DateUtil
 import com.example.reminderApp.ViewHolders.TodoViewHolder
 import com.example.reminderApp.ViewHolders.BaseViewHolder
+import timber.log.Timber
+import java.time.LocalDateTime
 
 class TodoRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder<*, TodoItemListener?>>() {
     private var todos: List<Todo> = emptyList()
@@ -27,6 +30,7 @@ class TodoRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder<*, TodoItemL
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(holder: BaseViewHolder<*, TodoItemListener?>, position: Int) {
         val todo = todos[position]
+        Timber.i("$todo") // TODO FIX
         (holder as BaseViewHolder<Any, TodoItemListener>).bind(todo, listener)
     }
 

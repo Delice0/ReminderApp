@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter
 
 class DateUtil {
     companion object {
-        private val dateFormat = DateTimeFormatter.ofPattern("dd/MM-yyyy")
-        private val dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM-yyyy hh:mm")
-        private val dateTimeFormat_simple = DateTimeFormatter.ofPattern("d.LLL hh:mm")
+        val dateFormat = DateTimeFormatter.ofPattern("dd/MM-yyyy")
+        val dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM-yyyy hh:mm")
+        val dateTimeFormat_simple = DateTimeFormatter.ofPattern("d.LLL hh:mm")
 
         fun dateFormat(date: LocalDate) = date.format(dateFormat)
 

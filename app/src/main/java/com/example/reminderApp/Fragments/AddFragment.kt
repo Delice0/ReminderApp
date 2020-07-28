@@ -19,6 +19,7 @@ import com.example.reminderApp.ViewModels.TodoViewModel
 import kotlinx.android.synthetic.main.fragment_add.*
 import timber.log.Timber
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val SELECT_DATE: String = "Select date"
@@ -26,7 +27,7 @@ private const val SELECT_DATE: String = "Select date"
 class AddFragment : DialogFragment() {
     private lateinit var mViewModel: TodoViewModel
 
-    private var pickedDateTime = ""
+    private var pickedDateTime: LocalDateTime? = null
     private var pickedPriority = ""
     private var priorities: Array<String>? = null
 
@@ -73,7 +74,6 @@ class AddFragment : DialogFragment() {
 
     private fun activateCreateTodo() {
         if (!hasUserPickedPriority()) {
-
             // Set default value for priority
             pickedPriority = priorities!![0]
         }
@@ -83,8 +83,8 @@ class AddFragment : DialogFragment() {
             addFrag_title.editableText.toString(),
             addFrag_description.editableText.toString(),
             pickedPriority,
-            pickedDateTime,
-            DateUtil.dateTimeFormat(LocalDateTime.now())
+            pickedDateTime!!,
+            LocalDateTime.now()
         )
 
         // TODO: Show error message to show user which field is not valid
@@ -112,17 +112,18 @@ class AddFragment : DialogFragment() {
         val startMinute = instance.get(Calendar.MINUTE)
 
         DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                        pickedDateTime = DateUtil.simpleDateTimeFormat(
-                            LocalDateTime.of(
-                                year,
-                                month + 1,
-                                day,
-                                hour,
-                                minute))
-                    addFrag_calender.text = pickedDateTime
-                }, startHour, startMinute, true).show()
-            }, startYear, startMonth, startDay).show()
+            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                pickedDateTime =
+                    LocalDateTime.of(
+                        year,
+                        month + 1,
+                        day,
+                        hour,
+                        minute
+                    )
+                addFrag_calender.text = pickedDateTime!!.format(DateUtil.dateTimeFormat)
+            }, startHour, startMinute, true).show()
+        }, startYear, startMonth, startDay).show()
     }
 
     private fun isTitleValid(): Boolean {

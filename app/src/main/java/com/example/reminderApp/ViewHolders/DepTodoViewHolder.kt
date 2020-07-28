@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
+import com.example.reminderApp.Utils.DateUtil
 
 @Deprecated("This is deprecated", ReplaceWith("TodoViewHolder()"))
 class DepTodoViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
@@ -33,8 +34,8 @@ class DepTodoViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         title?.text = todo.title
         description?.text = todo.description
         priority?.text = todo.priority
-        created?.text = todo.createdDate
-        duedate?.text = todo.dueDate
+        created?.text = todo.createdDate.format(DateUtil.dateTimeFormat_simple)
+        duedate?.text = todo.dueDate.format(DateUtil.dateTimeFormat_simple)
         checkbox?.isChecked = todo.isDone
 
         itemView.setOnClickListener { listener.onClickItem(itemView, adapterPosition) }

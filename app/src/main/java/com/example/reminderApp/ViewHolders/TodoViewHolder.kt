@@ -1,11 +1,15 @@
 package com.example.reminderApp.ViewHolders
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
+import com.example.reminderApp.Utils.DateUtil
+import org.xmlpull.v1.XmlPullParser
 
 class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view) {
     private var title: TextView? = null
@@ -28,8 +32,11 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
         title?.text = item.title
         description?.text = item.description
         priority?.text = item.priority
-        created?.text = item.createdDate
-        duedate?.text = item.dueDate
+
+        // Simplify datetime in UI
+        created?.text = item.createdDate.format(DateUtil.dateTimeFormat_simple)
+        duedate?.text = item.dueDate.format(DateUtil.dateTimeFormat_simple)
+
         checkbox?.isChecked = item.isDone
 
         itemView.setOnClickListener { listener?.onClickItem(itemView, adapterPosition) }
