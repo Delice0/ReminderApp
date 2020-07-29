@@ -42,8 +42,8 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
             onlyTime = splitDateAndTimeRegex.matchEntire(i)!!.groupValues[2]
         }
 
-        if (item.description.length >= 25) {
-            description?.text = item.description.substring(0,22) + "..."
+        if (item.description.length >= 23) {
+            description?.text = item.description.substring(0,23) + "..."
         } else {
             description?.text = item.description
         }
