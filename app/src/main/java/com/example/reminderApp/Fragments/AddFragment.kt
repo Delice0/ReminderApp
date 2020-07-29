@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
 import com.example.reminderApp.Utils.DateUtil
+import com.example.reminderApp.Utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
 import kotlinx.android.synthetic.main.fragment_add.*
 import timber.log.Timber
@@ -60,7 +61,20 @@ class AddFragment : DialogFragment() {
 
     private fun initializeListeners() {
         addFrag_calender.setOnClickListener { activateDateTimePicker() }
-        addFrag_create_todo.setOnClickListener { activateCreateTodo() }
+
+        addFrag_create_todo.setOnClickListener {
+            Timber.i("Validating fields...")
+            if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid()) {
+                activateCreateTodo()
+
+                dismiss()
+
+                ToastUtil.shortToast(requireContext(), "Created todo!")
+            } else {
+                ToastUtil.shortToast(requireContext(), "Remember to fill out fields!")
+            }
+        }
+
         addFrag_dropdown_priority.onItemSelectedListener = activatePriority()
     }
 
@@ -82,16 +96,8 @@ class AddFragment : DialogFragment() {
             LocalDateTime.now()
         )
 
-        // TODO: Show error message to show user which field is not valid
-        Timber.i("Validating fields...")
-        if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid()) {
-            Timber.i("Inserting TODO $todo")
-            mViewModel.insert(todo)
-
-            dismiss()
-
-            Toast.makeText(requireContext(), "Created todo!", Toast.LENGTH_LONG).show()
-        }
+        Timber.i("Inserting TODO $todo")
+        mViewModel.insert(todo)
     }
 
     private fun activateDateTimePicker() {
@@ -120,6 +126,7 @@ class AddFragment : DialogFragment() {
     private fun isTitleValid(): Boolean {
         if (addFrag_title.text.isEmpty()) {
             Timber.i("Title is not valid..")
+            addFrag_title.error = "You must fill title.."
             return false
         }
         return true
@@ -127,7 +134,8 @@ class AddFragment : DialogFragment() {
 
     private fun isDescriptionValid(): Boolean {
         if (addFrag_description.text.isEmpty()) {
-            Timber.i("Description is not valid..")
+            Timber.i("Description cannot be empty..")
+            addFrag_description.error = "You must fill description.."
             return false
         }
         return true
@@ -136,6 +144,7 @@ class AddFragment : DialogFragment() {
     private fun isSelectedDateTimeValid(): Boolean {
         if (addFrag_calender.text == SELECT_DATE) {
             Timber.i("Datetime is not valid..")
+            addFrag_calender.error = "You must choose a date.."
             return false
         }
         return true

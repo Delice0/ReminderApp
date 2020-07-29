@@ -101,7 +101,22 @@ abstract class TodoRoomDatabase : RoomDatabase() {
             todo5.doneDate = LocalDateTime.now()
             todo5.isDone = true
 
-            todoDao.insert(todo1, todo2, todo3, todo4, todo5)
+            val todo6 = Todo(
+                "TEST",
+                "TESTETETET",
+                5,
+                LocalDateTime.of(2020,7,30, 10, 50),
+                LocalDateTime.of(2005,10,5, 10, 50))
+
+            val todo7 = Todo(
+                "TEST2",
+                "TESTETETET",
+                5,
+                LocalDateTime.of(2020, 7, 29, 10, 50),
+                LocalDateTime.of(2005, 10, 5, 10, 50)
+            )
+
+            todoDao.insert(todo1, todo2, todo3, todo4, todo5, todo6, todo7)
         }
     }
 }

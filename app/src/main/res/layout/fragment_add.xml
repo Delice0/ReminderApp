@@ -65,7 +65,7 @@
             android:layout_below="@id/addFrag_third_relativelayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/image_calendar"
+            android:drawableLeft="@drawable/image_calendar"
             android:text="Select date"
             android:textAllCaps="false" />
 
