@@ -14,42 +14,30 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
     private var description: TextView? = null
     private var priority: TextView? = null
     private var created: TextView? = null
-    private var duedate_date: TextView? = null
-    private var duedate_time: TextView? = null
+    private var duedateDate: TextView? = null
+    private var duedateTime: TextView? = null
     private var checkbox: CheckBox? = null
-
-    val splitDateAndTimeRegex = "(\\d+\\.\\w{3})\\s(\\d+:\\d+)".toRegex()
 
     init {
         title = itemView.findViewById(R.id.todo_custom_title)
         description = itemView.findViewById(R.id.todo_custom_description)
         priority = itemView.findViewById(R.id.todo_custom_priority)
         created = itemView.findViewById(R.id.todo_custom_created)
-        duedate_date = itemView.findViewById(R.id.todo_custom_duedate_date)
-        duedate_time = itemView.findViewById(R.id.todo_custom_duedate_time)
+        duedateDate = itemView.findViewById(R.id.todo_custom_duedate_date)
+        duedateTime = itemView.findViewById(R.id.todo_custom_duedate_time)
         checkbox = itemView.findViewById(R.id.todo_custom_checkbox)
     }
 
     @SuppressLint("SetTextI18n")
     override fun bind(item: Todo, listener: TodoItemListener?) {
-        val i = item.dueDate.format(DateUtil.dateTimeFormat_simple)
-
-        var onlyDate = ""
-        var onlyTime = ""
-
-        if (splitDateAndTimeRegex.matches(i)) {
-            onlyDate = splitDateAndTimeRegex.matchEntire(i)!!.groupValues[1]
-            onlyTime = splitDateAndTimeRegex.matchEntire(i)!!.groupValues[2]
-        }
-
         if (item.description.length >= 23) {
             description?.text = item.description.substring(0,23) + "..."
         } else {
             description?.text = item.description
         }
 
-        duedate_date?.text = onlyDate
-        duedate_time?.text = onlyTime
+        duedateDate?.text = item.dueDate.toLocalDate().format(DateUtil.dateFormat_simple)
+        duedateTime?.text = item.dueDate.toLocalTime().toString()
 
         title?.text = item.title
         priority?.text = item.priority.toString()
