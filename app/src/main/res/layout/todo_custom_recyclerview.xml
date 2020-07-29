@@ -1,105 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="8dp"
-    android:orientation="horizontal">
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/layout_round_boarder">
 
-    <RelativeLayout
-        android:id="@+id/todo_custom_first_relativelayout"
+    <TextView
+        android:id="@+id/todo_custom_duedate_date"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/todo_custom_duedate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginEnd="5dp"
-            android:hint="2 days" />
-
-    </RelativeLayout>
-
-
-    <!-- Container for whole layout and to make the checkbox in right-center og parent -->
-    <RelativeLayout
-        android:id="@+id/todo_custom_second_relativelayout"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/todo_custom_duedate">
+        android:layout_marginTop="10dp"
+        android:hint="15.jul"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19999999" />
 
-        <!-- Container for title and description -->
-        <LinearLayout
-            android:id="@+id/todo_custom_first_linearlayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/todo_custom_duedate_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="10:55"
+        app:layout_constraintBottom_toBottomOf="@+id/todo_custom_created_simpletext"
+        app:layout_constraintEnd_toEndOf="@+id/todo_custom_duedate_date"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="@+id/todo_custom_duedate_date"
+        app:layout_constraintTop_toBottomOf="@+id/todo_custom_duedate_date"
+        app:layout_constraintVertical_bias="0.19" />
 
-            <TextView
-                android:id="@+id/todo_custom_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="10"
-                android:text="Title"
-                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/todo_custom_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="18"
-                android:text="description"
-                android:textSize="16sp" />
+    <TextView
+        android:id="@+id/todo_custom_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:maxLines="10"
+        android:text="Title"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/todo_custom_duedate_date"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/todo_custom_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:ellipsize="end"
+        android:maxLength="25"
+        android:text="description"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/todo_custom_title"
+        app:layout_constraintTop_toTopOf="@+id/todo_custom_title" />
 
-        <!-- Container for priority and created -->
-        <RelativeLayout
-            android:id="@+id/todo_custom_container_priority_created"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/todo_custom_first_linearlayout">
+    <TextView
+        android:id="@+id/todo_custom_priority_simpletext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Priority: "
+        app:layout_constraintStart_toStartOf="@+id/todo_custom_description"
+        app:layout_constraintTop_toTopOf="@+id/todo_custom_description" />
 
-            <TextView
-                android:id="@+id/todo_custom_priority_simpletext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Priority: " />
+    <TextView
+        android:id="@+id/todo_custom_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/todo_custom_priority_simpletext"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@id/todo_custom_priority_simpletext"
+        android:text="5"
+        app:layout_constraintStart_toEndOf="@+id/todo_custom_priority_simpletext"
+        app:layout_constraintTop_toBottomOf="@+id/todo_custom_description" />
 
-            <TextView
-                android:id="@+id/todo_custom_priority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/todo_custom_priority_simpletext"
-                android:layout_toEndOf="@id/todo_custom_priority_simpletext"
-                android:text="5" />
+    <TextView
+        android:id="@+id/todo_custom_created_simpletext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/todo_custom_priority_simpletext"
+        android:text="Created: "
+        app:layout_constraintStart_toStartOf="@+id/todo_custom_priority_simpletext"
+        app:layout_constraintTop_toBottomOf="@+id/todo_custom_priority_simpletext" />
 
-            <TextView
-                android:id="@+id/todo_custom_created_simpletext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/todo_custom_priority_simpletext"
-                android:text="Created: " />
+    <TextView
+        android:id="@+id/todo_custom_created"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/todo_custom_created_simpletext"
+        android:layout_toEndOf="@id/todo_custom_created_simpletext"
+        android:text="12-02-2020 18:22"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/todo_custom_created_simpletext"
+        app:layout_constraintTop_toTopOf="@+id/todo_custom_created_simpletext" />
 
-            <TextView
-                android:id="@+id/todo_custom_created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/todo_custom_created_simpletext"
-                android:layout_toEndOf="@id/todo_custom_created_simpletext"
-                android:text="12-02-2020 18:22"
-                android:textSize="14sp" />
+    <CheckBox
+        android:id="@+id/todo_custom_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        app:layout_constraintBottom_toBottomOf="@+id/todo_custom_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
 
-        </RelativeLayout>
-
-        <CheckBox
-            android:id="@+id/todo_custom_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
