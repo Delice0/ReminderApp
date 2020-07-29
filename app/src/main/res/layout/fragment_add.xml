@@ -61,11 +61,12 @@
         </RelativeLayout>
 
         <Button
+            android:background="@drawable/button_round_border_blue"
             android:id="@+id/addFrag_calender"
             android:layout_below="@id/addFrag_third_relativelayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/image_calendar"
+            android:drawableLeft="@drawable/image_calendar"
             android:text="Select date"
             android:textAllCaps="false" />
 
@@ -79,6 +80,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"
         android:text="Finish"
+        android:background="@drawable/button_round_border_green"
         android:textAllCaps="false" />
 
 </RelativeLayout>

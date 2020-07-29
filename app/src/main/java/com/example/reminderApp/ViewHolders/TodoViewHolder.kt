@@ -1,15 +1,24 @@
 package com.example.reminderApp.ViewHolders
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.reminderApp.Listeners.TodoItemListener
 import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
 import com.example.reminderApp.Utils.DateUtil
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view) {
+    @SuppressLint("ResourceType")
+    private val DEFAULT_BORDER_LAYOUT = view.background
+
     private var title: TextView? = null
     private var description: TextView? = null
     private var priority: TextView? = null
@@ -34,6 +43,37 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
             description?.text = item.description.substring(0,23) + "..."
         } else {
             description?.text = item.description
+        }
+
+        val currBackgroundGradientDrawable = DEFAULT_BORDER_LAYOUT as GradientDrawable
+        val gd = GradientDrawable()
+
+        when {
+            item.dueDate.toLocalDate() == LocalDate.now() -> {
+                gd.setStroke(3, Color.RED)
+                gd.cornerRadius = currBackgroundGradientDrawable.cornerRadius
+                gd.color = currBackgroundGradientDrawable.color
+
+                checkbox?.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorDanger))
+                itemView.background = gd
+            }
+            ChronoUnit.DAYS.between(LocalDate.now(), item.dueDate.toLocalDate()) in 1..4 -> {
+                // Border color
+                gd.setStroke(3, ContextCompat.getColor(itemView.context, R.color.colorWarning))
+
+                //Border radius
+                gd.cornerRadius = currBackgroundGradientDrawable.cornerRadius
+
+                // Background color
+                gd.color = currBackgroundGradientDrawable.color
+
+                checkbox?.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorWarning))
+
+                itemView.background = gd
+            }
+            else -> {
+                itemView.background = currBackgroundGradientDrawable
+            }
         }
 
         duedateDate?.text = item.dueDate.toLocalDate().format(DateUtil.dateFormat_simple)
