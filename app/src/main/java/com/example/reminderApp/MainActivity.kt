@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
 class MainActivity : AppCompatActivity() {
     private val todoFragment = TodoFragment()
     private val doneFragment = DoneFragment()

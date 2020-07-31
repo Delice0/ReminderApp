@@ -14,7 +14,6 @@ import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
 import com.example.reminderApp.adapters.DoneTodoRecyclerViewAdapter
 import com.example.reminderApp.utils.AlertUtil
-import com.example.reminderApp.utils.ToastUtil
 import timber.log.Timber
 
 @Suppress("NAME_SHADOWING")
@@ -54,7 +53,6 @@ class DoneFragment : Fragment() {
                 mViewModel.deleteAllDoneTodos()
                 mAdapter.notifyDataSetChanged()
 
-                ToastUtil.shortToast(requireContext(), "Cleared list!")
             }
             .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ -> dialog.dismiss() }
             .show()

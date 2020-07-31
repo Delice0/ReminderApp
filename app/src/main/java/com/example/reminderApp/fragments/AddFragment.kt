@@ -17,9 +17,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
 import com.example.reminderApp.models.Todo
+import com.example.reminderApp.shortToast
 import com.example.reminderApp.utils.AlertUtil
 import com.example.reminderApp.utils.DateUtil
-import com.example.reminderApp.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_add.*
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -30,15 +30,15 @@ private const val SELECT_DATE: String = "Select date"
 class AddFragment : DialogFragment() {
     private lateinit var mViewModel: TodoViewModel
 
-    private var pickedDateTime: LocalDateTime? = null
-    private var pickedPriority = 0
-    private var priorities: IntArray? = null
-    private var title: TextView? = null
-    private var description: TextView? = null
-    private var dropdown: AutoCompleteTextView? = null
-    private var selectDateBtn: Button? = null
-    private var finishBtn: Button? = null
-    private var cancelBtn: Button? = null
+    private lateinit var pickedDateTime: LocalDateTime
+    private var pickedPriority: Int = 0
+    private lateinit var priorities: IntArray
+    private lateinit var title: TextView
+    private lateinit var description: TextView
+    private lateinit var dropdown: AutoCompleteTextView
+    private lateinit var selectDateBtn: Button
+    private lateinit var finishBtn: Button
+    private lateinit var cancelBtn: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add, container, false)
@@ -48,7 +48,7 @@ class AddFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Set round border
-        dialog?.window?.setBackgroundDrawable(resources.getDrawable(R.drawable.layout_round_boarder, null));
+        dialog?.window?.setBackgroundDrawable(resources.getDrawable(R.drawable.layout_round_boarder, null))
 
         initializeViews()
 
@@ -56,34 +56,31 @@ class AddFragment : DialogFragment() {
 
         priorities = resources.getIntArray(R.array.priorities)
 
-        if (dropdown != null) {
-            val adapter = ArrayAdapter<Int?>(
-                view.context,
-                R.layout.dropdown_menu_popup_item,
-                priorities!!.toList()
-            )
+        val adapter = ArrayAdapter<Int?>(
+            view.context,
+            R.layout.dropdown_menu_popup_item,
+            priorities.toList())
 
-            dropdown?.setAdapter(adapter)
-        }
+        dropdown.setAdapter(adapter)
 
         initializeListeners()
     }
 
     private fun initializeViews() {
-        title = view?.findViewById(R.id.addfrag_title)
-        description = view?.findViewById(R.id.addFrag_description)
-        dropdown = view?.findViewById(R.id.addFrag_dropdown_priority)
-        finishBtn = view?.findViewById(R.id.addFrag_button_create_todo)
-        cancelBtn = view?.findViewById(R.id.addFrag_button_cancel)
-        selectDateBtn = view?.findViewById(R.id.addFrag_button_select_date)
+        title = requireView().findViewById(R.id.addfrag_title)
+        description = requireView().findViewById(R.id.addFrag_description)
+        dropdown = requireView().findViewById(R.id.addFrag_dropdown_priority)
+        finishBtn = requireView().findViewById(R.id.addFrag_button_create_todo)
+        cancelBtn = requireView().findViewById(R.id.addFrag_button_cancel)
+        selectDateBtn = requireView().findViewById(R.id.addFrag_button_select_date)
     }
 
     private fun initializeListeners() {
         // Select date button listeners
-        selectDateBtn?.setOnClickListener { activateDateTimePicker() }
-        selectDateBtn?.addTextChangedListener(object : TextWatcher {
+        selectDateBtn.setOnClickListener { activateDateTimePicker() }
+        selectDateBtn.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                selectDateBtn?.error = null
+                selectDateBtn.error = null
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -96,8 +93,8 @@ class AddFragment : DialogFragment() {
         })
 
         // Select priority listeners
-        dropdown?.setOnItemClickListener { parent, view, position, id -> setSelectedPriority(position) }
-        dropdown?.addTextChangedListener(object : TextWatcher {
+        dropdown.setOnItemClickListener { parent, view, position, id -> setSelectedPriority(position) }
+        dropdown.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 addFrag_layout_outlinedTextField_priority.error = null
             }
@@ -113,12 +110,13 @@ class AddFragment : DialogFragment() {
         })
 
         // Cancel creating a todo listener
-        cancelBtn?.setOnClickListener {
-            if (description != null || description?.text!!.isNotEmpty() || title != null || title?.text!!.isNotEmpty()) {
+        cancelBtn.setOnClickListener {
+            if (description.text.isNotEmpty() || title.text.isNotEmpty()) {
                 val builder = AlertUtil.buildAlertPopup(
                     requireView(),
                     AlertUtil.Titles.CONFIRMATION.title,
-                    "Your changes will be lost. Proceed?")
+                    "Your changes will be lost. Proceed?"
+                )
 
                 val create = builder.create()
 
@@ -127,39 +125,41 @@ class AddFragment : DialogFragment() {
                         // Dismiss this fragment
                         dismiss()
                     }
-                    .setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) {dialog, which ->
+                    .setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) { dialog, which ->
                         create.cancel()
                     }.show()
 
-            } else dismiss()
+            } else {
+                dismiss()
+            }
         }
 
         // Create todo listener
-        finishBtn?.setOnClickListener {
+        finishBtn.setOnClickListener {
             Timber.i("Validating fields...")
             if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid() && isPrioritySet()) {
                 activateCreateTodo()
 
                 dismiss()
 
-                ToastUtil.shortToast(requireContext(), "Created todo!")
+                shortToast("Created todo!")
             } else {
-                ToastUtil.shortToast(requireContext(), "Remember to fill out fields!")
+                shortToast("Remember to fill out fields!")
             }
         }
     }
 
     private fun setSelectedPriority(position: Int) {
-        pickedPriority = priorities!![position]
+        pickedPriority = priorities[position]
     }
 
     private fun activateCreateTodo() {
         // Create a todoObject from users selections
         val todo = Todo(
-            title?.text.toString(),
-            description?.editableText.toString(),
+            title.text.toString(),
+            description.editableText.toString(),
             pickedPriority,
-            pickedDateTime!!,
+            pickedDateTime,
             LocalDateTime.now()
         )
 
@@ -185,24 +185,24 @@ class AddFragment : DialogFragment() {
                         hour,
                         minute
                     )
-                addFrag_button_select_date.text = pickedDateTime!!.format(DateUtil.dateTimeFormat)
+                addFrag_button_select_date.text = pickedDateTime.format(DateUtil.dateTimeFormat)
             }, startHour, startMinute, true).show()
         }, startYear, startMonth, startDay).show()
     }
 
     private fun isTitleValid(): Boolean {
-        if (title?.text!!.isEmpty()) {
+        if (title.text.isEmpty()) {
             Timber.i("Title is not valid..")
-            title?.error = "Title cannot be empty.."
+            title.error = "Title cannot be empty.."
             return false
         }
         return true
     }
 
     private fun isDescriptionValid(): Boolean {
-        if (description?.text!!.isEmpty()) {
+        if (description.text.isEmpty()) {
             Timber.i("Description is not validated..")
-            title?.error = "Description cannot be empty.."
+            title.error = "Description cannot be empty.."
             return false
         }
         return true
