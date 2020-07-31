@@ -21,6 +21,7 @@ class AlertUtil {
     }
 
     enum class NegativeAnswer(val answer: String) {
+        NO("NO"),
         CANCEL("CANCEL")
     }
 }

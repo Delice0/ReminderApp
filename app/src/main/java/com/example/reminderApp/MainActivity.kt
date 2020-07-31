@@ -55,13 +55,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menuItem_bottomnavigation_add -> {
                     val addFragment = AddFragment()
 
-                    supportFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.fragment_container,
-                            addFragment,
-                            addFragment.javaClass.simpleName
-                        )
-                        .commit()
+                    addFragment.show(supportFragmentManager, "addfrag")
 
                     return@OnNavigationItemSelectedListener true
                 }
