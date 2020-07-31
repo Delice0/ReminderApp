@@ -1,26 +1,26 @@
-package com.example.reminderApp.Fragments
+package com.example.reminderApp.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.AutoCompleteTextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.reminderApp.Models.Todo
 import com.example.reminderApp.R
-import com.example.reminderApp.Utils.DateUtil
-import com.example.reminderApp.Utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
+import com.example.reminderApp.models.Todo
+import com.example.reminderApp.utils.DateUtil
+import com.example.reminderApp.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_add.*
 import timber.log.Timber
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val SELECT_DATE: String = "Select date"
@@ -31,6 +31,7 @@ class AddFragment : DialogFragment() {
     private var pickedDateTime: LocalDateTime? = null
     private var pickedPriority = 0
     private var priorities: IntArray? = null
+    private var dropdown: AutoCompleteTextView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add, container, false)
@@ -43,28 +44,42 @@ class AddFragment : DialogFragment() {
 
         priorities = resources.getIntArray(R.array.priorities)
 
-        // Views
-        val dropdown = view.findViewById<Spinner>(R.id.addFrag_dropdown_priority)
+        dropdown = view.findViewById(R.id.addFrag_dropdown_priority)
 
-        // Priority dropdown adapter
         if (dropdown != null) {
-            val adapter = ArrayAdapter(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
+            val adapter = ArrayAdapter<Int?>(
+                view.context,
+                R.layout.dropdown_menu_popup_item,
                 priorities!!.toList()
             )
-            dropdown.adapter = adapter
+
+            addFrag_dropdown_priority.setAdapter(adapter)
         }
 
         initializeListeners()
     }
 
     private fun initializeListeners() {
-        addFrag_calender.setOnClickListener { activateDateTimePicker() }
+        // Select date button listeners
+        addFrag_button_select_date.setOnClickListener { activateDateTimePicker() }
+        addFrag_button_select_date.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                addFrag_button_select_date.error = null
+            }
 
-        addFrag_create_todo.setOnClickListener {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Nothing
+            }
+        })
+
+        // Create todo listener
+        addFrag_button_create_todo.setOnClickListener {
             Timber.i("Validating fields...")
-            if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid()) {
+            if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid() && isPrioritySet()) {
                 activateCreateTodo()
 
                 dismiss()
@@ -75,21 +90,32 @@ class AddFragment : DialogFragment() {
             }
         }
 
-        addFrag_dropdown_priority.onItemSelectedListener = activatePriority()
+        // Select priority listeners
+        dropdown?.setOnItemClickListener { parent, view, position, id -> setSelectedPriority(position) }
+        dropdown?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                addFrag_layout_outlinedTextField_priority.error = null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+
+        })
     }
 
-    private fun activatePriority() = object : AdapterView.OnItemSelectedListener{
-        override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            pickedPriority = priorities!![position]
-        }
+    private fun setSelectedPriority(position: Int) {
+        pickedPriority = priorities!![position]
     }
 
     private fun activateCreateTodo() {
         // Create a todoObject from users selections
         val todo = Todo(
-            addFrag_title.editableText.toString(),
+            addfrag_title.text.toString(),
             addFrag_description.editableText.toString(),
             pickedPriority,
             pickedDateTime!!,
@@ -118,33 +144,42 @@ class AddFragment : DialogFragment() {
                         hour,
                         minute
                     )
-                addFrag_calender.text = pickedDateTime!!.format(DateUtil.dateTimeFormat)
+                addFrag_button_select_date.text = pickedDateTime!!.format(DateUtil.dateTimeFormat)
             }, startHour, startMinute, true).show()
         }, startYear, startMonth, startDay).show()
     }
 
     private fun isTitleValid(): Boolean {
-        if (addFrag_title.text.isEmpty()) {
+        if (addfrag_title.text!!.isEmpty()) {
             Timber.i("Title is not valid..")
-            addFrag_title.error = "You must fill title.."
+            addfrag_title.error = "Title cannot be empty.."
             return false
         }
         return true
     }
 
     private fun isDescriptionValid(): Boolean {
-        if (addFrag_description.text.isEmpty()) {
-            Timber.i("Description cannot be empty..")
-            addFrag_description.error = "You must fill description.."
+        if (addFrag_description.text!!.isEmpty()) {
+            Timber.i("Description is not validated..")
+            addFrag_description.error = "Description cannot be empty.."
             return false
         }
         return true
     }
 
     private fun isSelectedDateTimeValid(): Boolean {
-        if (addFrag_calender.text == SELECT_DATE) {
+        if (addFrag_button_select_date.text == SELECT_DATE) {
             Timber.i("Datetime is not valid..")
-            addFrag_calender.error = "You must choose a date.."
+            addFrag_button_select_date.error = "You must choose a priority.."
+            return false
+        }
+        return true
+    }
+
+    private fun isPrioritySet(): Boolean {
+        if (pickedPriority == 0) {
+            Timber.i("Priority is not selected..")
+            addFrag_layout_outlinedTextField_priority.error = "You must choose a priority.."
             return false
         }
         return true

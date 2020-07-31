@@ -1,9 +1,8 @@
-package com.example.reminderApp.DAOs
+package com.example.reminderApp.daos
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.models.Todo
 
 @Dao
 interface TodoDao {

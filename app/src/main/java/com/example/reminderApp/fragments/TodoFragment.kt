@@ -1,4 +1,4 @@
-package com.example.reminderApp.Fragments
+package com.example.reminderApp.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.reminderApp.Adapters.TodoRecyclerViewAdapter
-import com.example.reminderApp.Listeners.TodoItemListener
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.adapters.TodoRecyclerViewAdapter
+import com.example.reminderApp.listeners.TodoItemListener
+import com.example.reminderApp.models.Todo
 import com.example.reminderApp.R
-import com.example.reminderApp.Utils.AlertUtil
-import com.example.reminderApp.Utils.ToastUtil
+import com.example.reminderApp.utils.AlertUtil
+import com.example.reminderApp.utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
 import kotlinx.android.synthetic.main.todo_custom_recyclerview.view.*
 import timber.log.Timber
@@ -67,7 +67,7 @@ class TodoFragment : Fragment() {
 
     private fun activateCheckBox(ch: CheckBox, i: Int) {
         if (ch.isChecked) {
-            AlertUtil.buildAlertPopup(view!!, AlertUtil.Titles.CONFIRMATION.title, "Done?")
+            AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                 .setPositiveButton("YES") { dialog, which ->
                     ToastUtil.shortToast(requireContext(), "Updating...${i}")
 

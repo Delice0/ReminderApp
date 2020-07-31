@@ -1,4 +1,4 @@
-package com.example.reminderApp.Utils
+package com.example.reminderApp.utils
 
 import android.content.Context
 import android.widget.Toast

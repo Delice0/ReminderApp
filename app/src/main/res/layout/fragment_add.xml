@@ -1,85 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragments.AddFragment">
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/addFrag_second_relativelayout"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"
         android:text="Create a TODO"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.060000002" />
 
-    <RelativeLayout
-        android:id="@+id/addFrag_second_relativelayout"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addFrag_layout_outlinedTextField_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="357dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginStart="50dp">
+        android:hint="Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.13">
 
-        <EditText
-            android:id="@+id/addFrag_title"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addfrag_title"
+            android:maxLength="40"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:hint="Title here..." />
+            android:layout_height="wrap_content" />
 
-        <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addFrag_layout_outlinedTextField_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="357dp"
+        android:layout_height="125dp"
+        android:hint="Description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_title"
+        app:layout_constraintVertical_bias="0.120000005">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addFrag_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/addFrag_title"
-            android:layout_marginBottom="20dp"
-            android:hint="Description here..." />
+            android:layout_height="match_parent" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <RelativeLayout
-            android:id="@+id/addFrag_third_relativelayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/addFrag_description">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addFrag_layout_outlinedTextField_priority"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Priority"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.635"
+        app:layout_constraintStart_toEndOf="@+id/addFrag_button_select_date"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_description"
+        app:layout_constraintVertical_bias="0.18">
 
-            <TextView
-                android:id="@+id/addFrag_priority_simpletext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="Select priority: " />
-
-            <Spinner
-                android:id="@+id/addFrag_dropdown_priority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_toEndOf="@id/addFrag_priority_simpletext"
-                android:spinnerMode="dropdown" />
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/addFrag_calender"
-            android:layout_below="@id/addFrag_third_relativelayout"
+        <AutoCompleteTextView
+            android:id="@+id/addFrag_dropdown_priority"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/image_calendar"
-            android:text="Select date"
-            android:textAllCaps="false" />
+            android:layout_height="match_parent"
+            android:editable="false"
+            android:inputType="none" />
 
-    </RelativeLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/addFrag_create_todo"
+        android:id="@+id/addFrag_button_create_todo"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addFrag_second_relativelayout"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50dp"
         android:text="Finish"
-        android:textAllCaps="false" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/addFrag_layout_outlinedTextField_description"
+        app:layout_constraintStart_toStartOf="@+id/addFrag_button_select_date"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_button_select_date" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/addFrag_button_select_date"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select date"
+        app:icon="@drawable/image_calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/addFrag_layout_outlinedTextField_description"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_description"
+        app:layout_constraintVertical_bias="0.19999999" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

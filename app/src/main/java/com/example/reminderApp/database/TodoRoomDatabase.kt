@@ -1,4 +1,4 @@
-package com.example.reminderApp.Database
+package com.example.reminderApp.database
 
 import android.content.Context
 import androidx.room.Database
@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.reminderApp.Converters.LocalDateTimeConverter
-import com.example.reminderApp.DAOs.TodoDao
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.converters.LocalDateTimeConverter
+import com.example.reminderApp.daos.TodoDao
+import com.example.reminderApp.models.Todo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

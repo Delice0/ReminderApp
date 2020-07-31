@@ -1,4 +1,4 @@
-package com.example.reminderApp.Converters
+package com.example.reminderApp.converters
 
 import androidx.room.TypeConverter
 import java.time.LocalDateTime

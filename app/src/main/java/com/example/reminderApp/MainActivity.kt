@@ -2,9 +2,9 @@ package com.example.reminderApp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.reminderApp.Fragments.AddFragment
-import com.example.reminderApp.Fragments.DoneFragment
-import com.example.reminderApp.Fragments.TodoFragment
+import com.example.reminderApp.fragments.AddFragment
+import com.example.reminderApp.fragments.DoneFragment
+import com.example.reminderApp.fragments.TodoFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber

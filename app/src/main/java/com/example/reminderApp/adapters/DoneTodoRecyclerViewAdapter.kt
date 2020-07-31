@@ -1,13 +1,13 @@
-package com.example.reminderApp.Adapters
+package com.example.reminderApp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.reminderApp.Listeners.TodoItemListener
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.listeners.TodoItemListener
+import com.example.reminderApp.models.Todo
 import com.example.reminderApp.R
-import com.example.reminderApp.ViewHolders.BaseViewHolder
-import com.example.reminderApp.ViewHolders.DoneTodoViewHolder
+import com.example.reminderApp.viewHolders.BaseViewHolder
+import com.example.reminderApp.viewHolders.DoneTodoViewHolder
 
 class DoneTodoRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder<*, TodoItemListener?>>() {
     private var doneTodos: List<Todo> = emptyList()

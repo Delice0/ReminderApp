@@ -1,8 +1,8 @@
-package com.example.reminderApp.Repositories
+package com.example.reminderApp.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.reminderApp.DAOs.TodoDao
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.daos.TodoDao
+import com.example.reminderApp.models.Todo
 
 class TodoRepository(private val todoDao: TodoDao) {
 
