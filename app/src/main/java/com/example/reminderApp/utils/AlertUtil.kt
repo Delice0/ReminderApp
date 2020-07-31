@@ -1,4 +1,4 @@
-package com.example.reminderApp.Utils
+package com.example.reminderApp.utils
 
 import android.app.AlertDialog
 import android.view.View

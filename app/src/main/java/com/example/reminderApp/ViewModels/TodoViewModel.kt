@@ -4,13 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.reminderApp.Database.TodoRoomDatabase
-import com.example.reminderApp.Models.Todo
-import com.example.reminderApp.Repositories.TodoRepository
-import com.example.reminderApp.Utils.DateUtil
+import com.example.reminderApp.database.TodoRoomDatabase
+import com.example.reminderApp.models.Todo
+import com.example.reminderApp.repositories.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {

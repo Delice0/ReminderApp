@@ -1,12 +1,11 @@
-package com.example.reminderApp.ViewHolders
+package com.example.reminderApp.viewHolders
 
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
-import com.example.reminderApp.Listeners.TodoItemListener
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.listeners.TodoItemListener
+import com.example.reminderApp.models.Todo
 import com.example.reminderApp.R
-import com.example.reminderApp.Utils.DateUtil
+import com.example.reminderApp.utils.DateUtil
 
 class DoneTodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view) {
     private var title: TextView? = null

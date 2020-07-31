@@ -1,4 +1,4 @@
-package com.example.reminderApp.ViewHolders
+package com.example.reminderApp.viewHolders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

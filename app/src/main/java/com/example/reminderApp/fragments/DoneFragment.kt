@@ -1,4 +1,4 @@
-package com.example.reminderApp.Fragments
+package com.example.reminderApp.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.reminderApp.Adapters.DoneTodoRecyclerViewAdapter
 import com.example.reminderApp.R
-import com.example.reminderApp.Utils.AlertUtil
-import com.example.reminderApp.Utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
+import com.example.reminderApp.adapters.DoneTodoRecyclerViewAdapter
+import com.example.reminderApp.utils.AlertUtil
+import com.example.reminderApp.utils.ToastUtil
 import timber.log.Timber
 
 @Suppress("NAME_SHADOWING")
@@ -47,13 +47,15 @@ class DoneFragment : Fragment() {
         clearButton.setOnClickListener { activateClearList() }
     }
 
+    // TODO FIX default alert dialog colors
     fun activateClearList() {
-        AlertUtil.buildAlertPopup(view!!, AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
+        AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
             .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
                 mViewModel.deleteAllDoneTodos()
                 mAdapter.notifyDataSetChanged()
 
-                ToastUtil.shortToast(requireContext(), "Cleared list!") }
+                ToastUtil.shortToast(requireContext(), "Cleared list!")
+            }
             .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ -> dialog.dismiss() }
             .show()
     }

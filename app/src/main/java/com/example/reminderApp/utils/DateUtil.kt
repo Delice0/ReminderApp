@@ -1,4 +1,4 @@
-package com.example.reminderApp.Utils
+package com.example.reminderApp.utils
 
 import java.time.LocalDate
 import java.time.LocalDateTime

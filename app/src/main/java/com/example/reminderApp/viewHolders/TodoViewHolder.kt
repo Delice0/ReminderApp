@@ -1,4 +1,4 @@
-package com.example.reminderApp.ViewHolders
+package com.example.reminderApp.viewHolders
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.reminderApp.Listeners.TodoItemListener
-import com.example.reminderApp.Models.Todo
+import com.example.reminderApp.listeners.TodoItemListener
+import com.example.reminderApp.models.Todo
 import com.example.reminderApp.R
-import com.example.reminderApp.Utils.DateUtil
+import com.example.reminderApp.utils.DateUtil
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 

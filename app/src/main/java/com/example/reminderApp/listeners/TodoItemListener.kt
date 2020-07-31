@@ -1,4 +1,4 @@
-package com.example.reminderApp.Listeners
+package com.example.reminderApp.listeners
 
 import android.view.View
 
