@@ -18,8 +18,8 @@ import com.example.reminderApp.listeners.TodoItemListener
 import com.example.reminderApp.models.Todo
 import com.example.reminderApp.R
 import com.example.reminderApp.utils.AlertUtil
-import com.example.reminderApp.utils.ToastUtil
 import com.example.reminderApp.ViewModels.TodoViewModel
+import com.example.reminderApp.shortToast
 import kotlinx.android.synthetic.main.todo_custom_recyclerview.view.*
 import timber.log.Timber
 
@@ -28,9 +28,7 @@ class TodoFragment : Fragment() {
     private lateinit var mViewModel: TodoViewModel
     private lateinit var mAdapter: TodoRecyclerViewAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_todo, container, false)
     }
 
@@ -56,8 +54,6 @@ class TodoFragment : Fragment() {
         mViewModel.allTodos.observe(viewLifecycleOwner, Observer { todos ->
             // Update the cached copy of the words in the adapter.
             todos?.let { mAdapter.setTodos(todos) }
-
-            todos.forEach { t: Todo? -> println("ALL TODOS $t") }
         })
 
         // Swipe functionality
@@ -69,12 +65,12 @@ class TodoFragment : Fragment() {
         if (ch.isChecked) {
             AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                 .setPositiveButton("YES") { dialog, which ->
-                    ToastUtil.shortToast(requireContext(), "Updating...${i}")
+                    shortToast("Updating todo: ${mViewModel.allTodos.value?.get(i)?.title}")
 
                     mViewModel.finish(i)
                     mAdapter.notifyDataSetChanged() }
                 .setNegativeButton("CANCEL") { dialog, which ->
-                    ToastUtil.shortToast(requireContext(), "Cancelled..")
+                    shortToast("Cancelled..")
 
                     ch.isChecked = false }
                 .show()
@@ -101,7 +97,7 @@ class TodoFragment : Fragment() {
                         Toast.LENGTH_LONG).show() }
                     .setNegativeButton("CANCEL") { dialog, which ->
                         mAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                        ToastUtil.shortToast(requireContext(), "Cancelled..") }
+                        shortToast("Cancelled..") }
                     .show()
             }
         }
