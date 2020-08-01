@@ -1,13 +1,14 @@
 package com.example.reminderApp.daos
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import com.example.reminderApp.models.Todo
 
 @Dao
 interface TodoDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg todo: Todo)
 
     @Query("SELECT * FROM todo_table WHERE is_done = 0 ORDER BY due_date ASC, priority ASC")

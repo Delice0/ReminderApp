@@ -111,7 +111,7 @@ class AddFragment : DialogFragment() {
 
         // Cancel creating a todo listener
         cancelBtn.setOnClickListener {
-            if (description.text.isNotEmpty() || title.text.isNotEmpty()) {
+            if (description.text.isNotEmpty() && title.text.isNotEmpty()) {
                 val builder = AlertUtil.buildAlertPopup(
                     requireView(),
                     AlertUtil.Titles.CONFIRMATION.title,

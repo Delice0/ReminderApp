@@ -3,6 +3,7 @@ package com.example.reminderApp
 import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import timber.log.Timber
 
 /**
  * Used to extend Toast function inside fragments
