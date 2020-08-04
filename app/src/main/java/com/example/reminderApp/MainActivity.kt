@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         // Initialize Timber
         if (BuildConfig.DEBUG) {
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                             todoFragment,
                             todoFragment.javaClass.simpleName
                         )
-                        .addToBackStack(null)
+                        .addToBackStack("bsTodo")
                         .commit()
 
                     return@OnNavigationItemSelectedListener true
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                             doneFragment,
                             doneFragment.javaClass.simpleName
                         )
-                        .addToBackStack(null)
+                        .addToBackStack("bsDone")
                         .commit()
 
                     return@OnNavigationItemSelectedListener true
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                     return true
                 }
             }
-            Timber.i("No parent has childrens..")
+            Timber.i("No parent has children..")
             return false
         }
         Timber.i("No parent is present..")
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
      * Handle back-button pressed for childfragments
      */
     override fun onBackPressed() {
-        val fragmentList: List<Fragment> = supportFragmentManager.fragments
+        val fragmentList = supportFragmentManager.fragments
 
         var handled = false
         for (fragment in fragmentList) {

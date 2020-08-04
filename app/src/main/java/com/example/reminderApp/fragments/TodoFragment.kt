@@ -47,7 +47,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
                     childFragmentManager.beginTransaction()
                         .add(R.id.todoFrag_container, todoDetailFragment, todoDetailFragment.javaClass.simpleName)
-                        .addToBackStack(null)
+                        .addToBackStack("childBsTodo")
                         .commit()
 
                     val todo = mViewModel.allTodos.value?.get(i)
@@ -128,9 +128,9 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
                 if (childFragments.size > 0) {
                     Timber.i("Removing any ChildFragment is now being processed..")
-                    for (childFrag in childFragments) {
-                        Timber.i("${childFrag.tag} is being removed..")
-                        transaction.remove(childFrag)
+                    for (childFragment in childFragments) {
+                        Timber.i("${childFragment.tag} is being removed..")
+                        transaction.remove(childFragment)
                     }
 
                     transaction.commit()
