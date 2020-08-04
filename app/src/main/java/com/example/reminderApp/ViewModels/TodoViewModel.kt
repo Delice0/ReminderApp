@@ -1,9 +1,7 @@
 package com.example.reminderApp.ViewModels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.reminderApp.database.TodoRoomDatabase
 import com.example.reminderApp.models.Todo
 import com.example.reminderApp.repositories.TodoRepository
@@ -16,6 +14,12 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     val allTodos: LiveData<List<Todo>>
     val allDoneTodos: LiveData<List<Todo>>
+
+    val selected = MutableLiveData<Todo>()
+
+    fun select(todo: Todo) {
+        selected.value = todo
+    }
 
     init {
         val todoDao = TodoRoomDatabase.getDatabase(application, viewModelScope)

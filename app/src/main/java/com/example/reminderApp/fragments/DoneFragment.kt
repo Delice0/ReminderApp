@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
 import com.example.reminderApp.adapters.DoneTodoRecyclerViewAdapter
+import com.example.reminderApp.listeners.OnBackPressedListener
 import com.example.reminderApp.utils.AlertUtil
 import timber.log.Timber
 
 @Suppress("NAME_SHADOWING")
-class DoneFragment : Fragment() {
+class DoneFragment : Fragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
     private lateinit var mAdapter: DoneTodoRecyclerViewAdapter
 
@@ -56,5 +57,30 @@ class DoneFragment : Fragment() {
             }
             .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ -> dialog.dismiss() }
             .show()
+    }
+
+    override fun onBackPressed(): Boolean {
+        Timber.i("Validating back button press..")
+        if (parentFragmentManager.backStackEntryCount == 0) {
+            if (childFragmentManager.backStackEntryCount > 0) {
+                val transaction = childFragmentManager.beginTransaction()
+
+                val childFragments = childFragmentManager.fragments
+
+                if (childFragments.size > 0) {
+                    Timber.i("Removing any ChildFragment is now being processed..")
+                    for (childFrag in childFragments) {
+                        Timber.i("${childFrag.tag} is being removed..")
+                        transaction.remove(childFrag)
+                    }
+
+                    transaction.commit()
+
+                    return true
+                }
+                return false
+            }
+        }
+        return false
     }
 }

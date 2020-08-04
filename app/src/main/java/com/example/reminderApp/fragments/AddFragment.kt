@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
+import com.example.reminderApp.listeners.OnBackPressedListener
 import com.example.reminderApp.models.Todo
 import com.example.reminderApp.shortToast
 import com.example.reminderApp.utils.AlertUtil
@@ -27,7 +28,7 @@ import java.util.*
 
 private const val SELECT_DATE: String = "Select date"
 
-class AddFragment : DialogFragment() {
+class AddFragment : DialogFragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
 
     private lateinit var pickedDateTime: LocalDateTime
@@ -111,7 +112,7 @@ class AddFragment : DialogFragment() {
 
         // Cancel creating a todo listener
         cancelBtn.setOnClickListener {
-            if (description.text.isNotEmpty() || title.text.isNotEmpty()) {
+            if (description.text.isNotEmpty() && title.text.isNotEmpty()) {
                 val builder = AlertUtil.buildAlertPopup(
                     requireView(),
                     AlertUtil.Titles.CONFIRMATION.title,
@@ -224,5 +225,30 @@ class AddFragment : DialogFragment() {
             return false
         }
         return true
+    }
+
+    override fun onBackPressed(): Boolean {
+        Timber.i("Validating back button press..")
+        if (parentFragmentManager.backStackEntryCount == 0) {
+            if (childFragmentManager.backStackEntryCount > 0) {
+                val transaction = childFragmentManager.beginTransaction()
+
+                val childFragments = childFragmentManager.fragments
+
+                if (childFragments.size > 0) {
+                    Timber.i("Removing any ChildFragment is now being processed..")
+                    for (childFrag in childFragments) {
+                        Timber.i("${childFrag.tag} is being removed..")
+                        transaction.remove(childFrag)
+                    }
+
+                    transaction.commit()
+
+                    return true
+                }
+                return false
+            }
+        }
+        return false
     }
 }
