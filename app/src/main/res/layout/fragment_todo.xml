@@ -7,6 +7,15 @@
     android:id="@+id/todoFrag_container"
     android:background="@android:color/white">
 
+    <TextView
+        android:id="@+id/todoFrag_textview_emptyList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="Done for today!"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todoFrag_recyclerview"
         android:layout_width="match_parent"

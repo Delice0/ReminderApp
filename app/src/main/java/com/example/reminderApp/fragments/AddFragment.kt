@@ -94,7 +94,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         })
 
         // Select priority listeners
-        dropdown.setOnItemClickListener { parent, view, position, id -> setSelectedPriority(position) }
+        dropdown.setOnItemClickListener { _, _, position, _ -> setSelectedPriority(position) }
         dropdown.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 addFrag_layout_outlinedTextField_priority.error = null
@@ -122,11 +122,11 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
                 val create = builder.create()
 
                 builder
-                    .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { dialog, which ->
+                    .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
                         // Dismiss this fragment
                         dismiss()
                     }
-                    .setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) { dialog, which ->
+                    .setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) { _, _ ->
                         create.cancel()
                     }.show()
 

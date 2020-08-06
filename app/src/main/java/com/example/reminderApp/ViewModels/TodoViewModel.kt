@@ -22,10 +22,11 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     init {
-        val todoDao = TodoRoomDatabase.getDatabase(application, viewModelScope)
+        val todoDao = TodoRoomDatabase.getDatabase(application)
             .todoDao()
 
         repository = TodoRepository(todoDao)
+
 
         allTodos = repository.allTodos
         allDoneTodos = repository.allDoneTodos
@@ -40,15 +41,19 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun finish(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        updateTodo(position)
+        updateTodoToDone(position)
         repository.finish(position)
+    }
+
+    fun update(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(id)
     }
 
     fun deleteAllDoneTodos() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteDoneTodos()
     }
 
-    private fun updateTodo(position: Int) {
+    private fun updateTodoToDone(position: Int) {
         allTodos.value?.get(position).let {
             it?.doneDate = LocalDateTime.now()
             it?.isDone = true

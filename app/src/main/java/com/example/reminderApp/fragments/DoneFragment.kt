@@ -17,7 +17,6 @@ import com.example.reminderApp.listeners.OnBackPressedListener
 import com.example.reminderApp.utils.AlertUtil
 import timber.log.Timber
 
-@Suppress("NAME_SHADOWING")
 class DoneFragment : Fragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
     private lateinit var mAdapter: DoneTodoRecyclerViewAdapter
@@ -40,22 +39,21 @@ class DoneFragment : Fragment(), OnBackPressedListener {
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
 
         mViewModel.allDoneTodos.observe(viewLifecycleOwner, Observer {
-            Timber.i("ALL DONE TODOS $it")
             mAdapter.setDoneTodos(it)
         })
 
         clearButton.setOnClickListener { activateClearList() }
     }
 
-    // TODO FIX default alert dialog colors
-    fun activateClearList() {
+    private fun activateClearList() {
         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
             .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
                 mViewModel.deleteAllDoneTodos()
                 mAdapter.notifyDataSetChanged()
-
             }
-            .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 
@@ -68,7 +66,7 @@ class DoneFragment : Fragment(), OnBackPressedListener {
                 val childFragments = childFragmentManager.fragments
 
                 if (childFragments.size > 0) {
-                    Timber.i("Removing any ChildFragment is now being processed..")
+                    Timber.i("Removing any ChildFragment that is present..")
                     for (childFrag in childFragments) {
                         Timber.i("${childFrag.tag} is being removed..")
                         transaction.remove(childFrag)
