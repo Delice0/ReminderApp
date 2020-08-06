@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +18,7 @@ import com.example.reminderApp.listeners.OnBackPressedListener
 import com.example.reminderApp.listeners.TodoItemListener
 import com.example.reminderApp.shortToast
 import com.example.reminderApp.utils.AlertUtil
+import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.android.synthetic.main.todo_custom_recyclerview.view.*
 import timber.log.Timber
 
@@ -37,11 +37,43 @@ class TodoFragment : Fragment(), OnBackPressedListener {
         val recyclerView = view.findViewById<RecyclerView>(R.id.todoFrag_recyclerview)
 
         mAdapter = TodoRecyclerViewAdapter()
+        recyclerView.adapter = mAdapter
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
+        mViewModel.allTodos.observe(viewLifecycleOwner, Observer {
+            it.let {
+                if (it.isEmpty()) {
+                    todoFrag_textview_emptyList.visibility = View.VISIBLE
+                } else {
+                    mAdapter.setTodos(it)
+                    todoFrag_textview_emptyList.visibility = View.GONE
+                }
+            }
+        })
 
         mAdapter.itemClicked(TodoItemListener { view, i ->
             when (view) {
                 recyclerView.findViewHolderForAdapterPosition(i)?.itemView?.todo_custom_checkbox -> {
-                    activateCheckBox(view as CheckBox, i) }
+                    view as CheckBox
+
+                    if (view.isChecked) {
+                        AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
+                            .setPositiveButton("YES") { _, _ ->
+                                Timber.i("Setting following todo to done: ${mViewModel.allTodos.value?.get(i)?.title}")
+                                shortToast("${mViewModel.allTodos.value?.get(i)?.title} is done")
+
+                                mViewModel.finish(i)
+                                mAdapter.notifyDataSetChanged() }
+                            .setNegativeButton("CANCEL") { _, _ ->
+                                Timber.i("Cancelled..")
+                                shortToast("Cancelled..")
+
+                                view.isChecked = false }
+                            .setCancelable(false)
+                            .show()
+                    }
+                }
                 recyclerView.findViewHolderForAdapterPosition(i)?.itemView -> {
                     val todoDetailFragment = TodoDetailFragment()
 
@@ -58,37 +90,9 @@ class TodoFragment : Fragment(), OnBackPressedListener {
             }
         })
 
-        recyclerView.adapter = mAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-
-        mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
-        mViewModel.allTodos.observe(viewLifecycleOwner, Observer {
-
-            // Update the cached copy of the todos in the adapter.
-            it.let { mAdapter.setTodos(it) }
-        })
-
         // Initialize ItemTouchHelper AKA in this scenario: swipe function
         val itemtouchHelper = ItemTouchHelper(activateItemTouchSwipe())
         itemtouchHelper.attachToRecyclerView(recyclerView)
-    }
-
-    private fun activateCheckBox(ch: CheckBox, i: Int) {
-        if (ch.isChecked) {
-            AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
-                .setPositiveButton("YES") { _, _ ->
-                    Timber.i("Updating todo: ${mViewModel.allTodos.value?.get(i)?.title}")
-                    shortToast("Updating todo: ${mViewModel.allTodos.value?.get(i)?.title}")
-
-                    mViewModel.finish(i)
-                    mAdapter.notifyDataSetChanged() }
-                .setNegativeButton("CANCEL") { _, _ ->
-                    Timber.i("Updating todo is cancelled..")
-                    shortToast("Cancelled..")
-
-                    ch.isChecked = false }
-                .show()
-        }
     }
 
     private fun activateItemTouchSwipe() =
@@ -108,7 +112,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                         Timber.i("Deleting todo: ${mViewModel.allTodos.value?.get(viewHolder.adapterPosition)}")
                         mViewModel.delete(viewHolder.adapterPosition)
 
-                        shortToast("Deleted following todo succesfully!") }
+                        shortToast("Deleted!") }
                     .setNegativeButton("CANCEL") { _, _ ->
                         Timber.i("User has cancelled deleting todo..")
 
@@ -120,7 +124,6 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
     override fun onBackPressed(): Boolean {
         Timber.i("Validating back button press..")
-        if (parentFragmentManager.backStackEntryCount == 0) {
             if (childFragmentManager.backStackEntryCount > 0) {
                 val transaction = childFragmentManager.beginTransaction()
 
@@ -139,7 +142,6 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                 }
                 return false
             }
-        }
         return false
     }
 }

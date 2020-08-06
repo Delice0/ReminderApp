@@ -38,7 +38,7 @@
         android:id="@+id/todo_custom_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLength="15"
+        android:maxLength="20"
         android:text="Title"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

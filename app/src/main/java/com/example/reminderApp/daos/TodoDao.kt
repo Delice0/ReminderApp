@@ -27,6 +27,9 @@ interface TodoDao {
     @Update
     suspend fun finish(todo: Todo)
 
+    @Update
+    suspend fun update(todo: Todo)
+
     @Query("DELETE FROM todo_table WHERE is_done = 1")
     fun deleteDoneTodos()
 }

@@ -1,7 +1,6 @@
 package com.example.reminderApp.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.reminderApp.daos.TodoDao
 import com.example.reminderApp.models.Todo
 
@@ -22,6 +21,14 @@ class TodoRepository(private val todoDao: TodoDao) {
         allTodos.value?.get(position)?.let {
             todoDao.finish(it)
         }
+    }
+
+    suspend fun update(id: Long) {
+        allTodos.value?.stream()
+            ?.filter { it.id == id }
+            ?.findFirst()
+            ?.get()
+            ?.let { todoDao.update(it) }
     }
 
     fun deleteDoneTodos() {

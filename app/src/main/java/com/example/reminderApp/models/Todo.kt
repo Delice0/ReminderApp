@@ -7,8 +7,8 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "todo_table")
 data class Todo(
-    val title: String,
-    val description: String,
+    var title: String,
+    var description: String,
     val priority: Int,
     @ColumnInfo(name = "due_date")
     val dueDate: LocalDateTime,
