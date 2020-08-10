@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.android.synthetic.main.todo_custom_recyclerview.view.*
 import timber.log.Timber
 
-@Suppress("NAME_SHADOWING")
 class TodoFragment : Fragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
     private lateinit var mAdapter: TodoRecyclerViewAdapter
@@ -43,10 +42,11 @@ class TodoFragment : Fragment(), OnBackPressedListener {
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
         mViewModel.allTodos.observe(viewLifecycleOwner, Observer {
             it.let {
+                mAdapter.setTodos(it)
+
                 if (it.isEmpty()) {
                     todoFrag_textview_emptyList.visibility = View.VISIBLE
                 } else {
-                    mAdapter.setTodos(it)
                     todoFrag_textview_emptyList.visibility = View.GONE
                 }
             }
@@ -54,14 +54,14 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
         mAdapter.itemClicked(TodoItemListener { view, i ->
             when (view) {
-                recyclerView.findViewHolderForAdapterPosition(i)?.itemView?.todo_custom_checkbox -> {
+                recyclerView.findViewHolderForAdapterPosition(i)!!.itemView.todo_custom_checkbox -> {
                     view as CheckBox
 
                     if (view.isChecked) {
                         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                             .setPositiveButton("YES") { _, _ ->
-                                Timber.i("Setting following todo to done: ${mViewModel.allTodos.value?.get(i)?.title}")
-                                shortToast("${mViewModel.allTodos.value?.get(i)?.title} is done")
+                                Timber.i("Setting following todo to done: ${mViewModel.allTodos.value!![i].title}")
+                                shortToast("${mViewModel.allTodos.value!![i].title} is done")
 
                                 mViewModel.finish(i)
                                 mAdapter.notifyDataSetChanged() }
@@ -74,7 +74,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                             .show()
                     }
                 }
-                recyclerView.findViewHolderForAdapterPosition(i)?.itemView -> {
+                recyclerView.findViewHolderForAdapterPosition(i)!!.itemView -> {
                     val todoDetailFragment = TodoDetailFragment()
 
                     childFragmentManager.beginTransaction()
@@ -82,10 +82,10 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                         .addToBackStack("childBsTodo")
                         .commit()
 
-                    val todo = mViewModel.allTodos.value?.get(i)
+                    val todo = mViewModel.allTodos.value!![i]
                     Timber.i("Picked todo $todo................")
 
-                    mViewModel.select(todo!!)
+                    mViewModel.select(todo)
                 }
             }
         })
@@ -109,7 +109,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                     "Are you sure that you wanna delete this todo?")
 
                     .setPositiveButton("DELETE") { _, _ ->
-                        Timber.i("Deleting todo: ${mViewModel.allTodos.value?.get(viewHolder.adapterPosition)}")
+                        Timber.i("Deleting todo: ${mViewModel.allTodos.value!![viewHolder.adapterPosition]}")
                         mViewModel.delete(viewHolder.adapterPosition)
 
                         shortToast("Deleted!") }

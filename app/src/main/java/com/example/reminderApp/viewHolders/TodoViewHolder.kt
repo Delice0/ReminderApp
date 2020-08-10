@@ -45,7 +45,7 @@ class TodoViewHolder(view: View) : BaseViewHolder<Todo, TodoItemListener?>(view)
         duedateDate?.text = item.dueDate.toLocalDate().format(DateUtil.dateFormat_simple)
         duedateTime?.text = item.dueDate.toLocalTime().toString()
 
-        priority?.text = item.priority.toString()
+        priority?.text = item.priority
         checkbox?.isChecked = item.isDone
         created?.text = item.createdDate.format(DateUtil.dateTimeFormat_simple)
 

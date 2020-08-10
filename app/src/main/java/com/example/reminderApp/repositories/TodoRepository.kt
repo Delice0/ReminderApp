@@ -3,6 +3,7 @@ package com.example.reminderApp.repositories
 import androidx.lifecycle.LiveData
 import com.example.reminderApp.daos.TodoDao
 import com.example.reminderApp.models.Todo
+import java.time.LocalDateTime
 
 class TodoRepository(private val todoDao: TodoDao) {
 
@@ -14,21 +15,24 @@ class TodoRepository(private val todoDao: TodoDao) {
     }
 
     fun delete(position: Int) {
-        allTodos.value?.get(position)?.let { todoDao.delete(it) }
+        allTodos.value!![position].let { todoDao.delete(it) }
     }
 
     suspend fun finish(position: Int) {
-        allTodos.value?.get(position)?.let {
+        allTodos.value!![position].let {
+            it.doneDate = LocalDateTime.now()
+            it.isDone = true
+
             todoDao.finish(it)
         }
     }
 
     suspend fun update(id: Long) {
-        allTodos.value?.stream()
-            ?.filter { it.id == id }
-            ?.findFirst()
-            ?.get()
-            ?.let { todoDao.update(it) }
+        allTodos.value!!.stream()
+            .filter { it.id == id }
+            .findFirst()
+            .get()
+            .let { todoDao.update(it) }
     }
 
     fun deleteDoneTodos() {
