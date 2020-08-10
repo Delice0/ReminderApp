@@ -32,8 +32,8 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
 
     private lateinit var pickedDateTime: LocalDateTime
-    private var pickedPriority: Int = 0
-    private lateinit var priorities: IntArray
+    private var pickedPriority = ""
+    private var priorities = emptyArray<String>()
     private lateinit var title: TextView
     private lateinit var description: TextView
     private lateinit var dropdown: AutoCompleteTextView
@@ -55,12 +55,12 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
 
-        priorities = resources.getIntArray(R.array.priorities)
+        priorities = resources.getStringArray(R.array.priorities)
 
-        val adapter = ArrayAdapter<Int?>(
+        val adapter = ArrayAdapter<String?>(
             view.context,
             R.layout.dropdown_menu_popup_item,
-            priorities.toList())
+            priorities)
 
         dropdown.setAdapter(adapter)
 
@@ -219,7 +219,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     }
 
     private fun isPrioritySet(): Boolean {
-        if (pickedPriority == 0) {
+        if (pickedPriority.isEmpty()) {
             Timber.i("Priority is not selected..")
             addFrag_layout_outlinedTextField_priority.error = "You must choose a priority.."
             return false
