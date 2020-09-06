@@ -31,9 +31,12 @@ private const val SELECT_DATE: String = "Select date"
 class AddFragment : DialogFragment(), OnBackPressedListener {
     private lateinit var mViewModel: TodoViewModel
 
+    // Normal variables
     private lateinit var pickedDateTime: LocalDateTime
     private var pickedPriority = ""
     private var priorities = emptyArray<String>()
+
+    // Views
     private lateinit var title: TextView
     private lateinit var description: TextView
     private lateinit var dropdown: AutoCompleteTextView
@@ -81,9 +84,9 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
     /**
      * All listeners that interacts with the views in this Fragment
-     * @sample selectDateBtn        Listens to events when user registering a new date and time for todo
+     * @sample selectDateBtn        Listens to events when user registering a new date and time for todoo
      * @sample dropdown             Listens to events when user choosing a priority from the dropdown-menu
-     * @sample cancelBtn            Listens to events when user cancelling new todo
+     * @sample cancelBtn            Listens to events when user cancelling new todoo
      * @sample finishBtn            Listens to events when user is done adding parameters for a new todoo and clicks on finish
      */
     private fun initializeListeners() {

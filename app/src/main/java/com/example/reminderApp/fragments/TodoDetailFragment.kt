@@ -20,6 +20,7 @@ import timber.log.Timber
 class TodoDetailFragment: Fragment() {
     private lateinit var mViewModel: TodoViewModel
 
+    // Views
     private lateinit var edtTitle: EditText
     private lateinit var edtDescription: EditText
     private lateinit var btnSaveChanges: Button
