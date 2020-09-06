@@ -14,12 +14,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     val allTodos: LiveData<List<Todo>>
     val allDoneTodos: LiveData<List<Todo>>
-
     val selected = MutableLiveData<Todo>()
-
-    fun select(todo: Todo) {
-        selected.value = todo
-    }
 
     init {
         val todoDao = TodoRoomDatabase.getDatabase(application)
@@ -27,9 +22,12 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
         repository = TodoRepository(todoDao)
 
-
         allTodos = repository.allTodos
         allDoneTodos = repository.allDoneTodos
+    }
+
+    fun select(todo: Todo) {
+        selected.value = todo
     }
 
     fun insert(todo: Todo) = viewModelScope.launch(Dispatchers.IO) {

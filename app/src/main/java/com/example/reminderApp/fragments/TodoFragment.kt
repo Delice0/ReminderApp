@@ -35,11 +35,15 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.todoFrag_recyclerview)
 
+        // Initialize custom adapter and sets its layout
         mAdapter = TodoRecyclerViewAdapter()
         recyclerView.adapter = mAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
+        // Initialize viewmodel
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
+
+        // Observe all todos and add them to the view
         mViewModel.allTodos.observe(viewLifecycleOwner, Observer {
             it.let {
                 mAdapter.setTodos(it)
@@ -61,15 +65,18 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                             .setPositiveButton("YES") { _, _ ->
                                 Timber.i("Setting following todo to done: ${mViewModel.allTodos.value!![i].title}")
-                                shortToast("${mViewModel.allTodos.value!![i].title} is done")
 
                                 mViewModel.finish(i)
-                                mAdapter.notifyDataSetChanged() }
+
+                                mAdapter.notifyDataSetChanged()
+
+                                shortToast("${mViewModel.allTodos.value!![i].title} is done") }
                             .setNegativeButton("CANCEL") { _, _ ->
                                 Timber.i("Cancelled..")
-                                shortToast("Cancelled..")
 
-                                view.isChecked = false }
+                                view.isChecked = false
+
+                                shortToast("Cancelled..") }
                             .setCancelable(false)
                             .show()
                     }
@@ -83,14 +90,15 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                         .commit()
 
                     val todo = mViewModel.allTodos.value!![i]
-                    Timber.i("Picked todo $todo................")
+
+                    Timber.i("Navigating to detail fragment of $todo")
 
                     mViewModel.select(todo)
                 }
             }
         })
 
-        // Initialize ItemTouchHelper AKA in this scenario: swipe function
+        // Initialize swipe functionality
         val itemtouchHelper = ItemTouchHelper(activateItemTouchSwipe())
         itemtouchHelper.attachToRecyclerView(recyclerView)
     }
@@ -110,6 +118,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
                     .setPositiveButton("DELETE") { _, _ ->
                         Timber.i("Deleting todo: ${mViewModel.allTodos.value!![viewHolder.adapterPosition]}")
+
                         mViewModel.delete(viewHolder.adapterPosition)
 
                         shortToast("Deleted!") }
@@ -117,6 +126,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                         Timber.i("User has cancelled deleting todo..")
 
                         mAdapter.notifyItemChanged(viewHolder.adapterPosition)
+
                         shortToast("Cancelled..") }
                     .show()
             }
@@ -124,15 +134,20 @@ class TodoFragment : Fragment(), OnBackPressedListener {
 
     override fun onBackPressed(): Boolean {
         Timber.i("Validating back button press..")
+
             if (childFragmentManager.backStackEntryCount > 0) {
+                Timber.i("Backstack entries confirmed. Proceeding transactions..")
+
                 val transaction = childFragmentManager.beginTransaction()
 
                 val childFragments = childFragmentManager.fragments
 
                 if (childFragments.size > 0) {
-                    Timber.i("Removing any ChildFragment is now being processed..")
+                    Timber.i("Removing any child fragments is now being processed..")
+
                     for (childFragment in childFragments) {
                         Timber.i("${childFragment.tag} is being removed..")
+
                         transaction.remove(childFragment)
                     }
 
