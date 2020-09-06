@@ -209,7 +209,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
     private fun isDescriptionValid(): Boolean {
         if (description.text.isEmpty()) {
-            Timber.i("Description is not validated..")
+            Timber.i("Description is not valid..")
 
             title.error = "Description cannot be empty.."
             return false

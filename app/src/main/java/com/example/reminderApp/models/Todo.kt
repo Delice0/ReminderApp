@@ -24,14 +24,14 @@ data class Todo(
     var doneDate: LocalDateTime? = null
     override fun toString(): String {
         return "Todo with parameters: {\n" +
-                "ID: $id\n" +
-                "Title: $title\n" +
-                "Description: $description\n" +
-                "Priority: $priority\n" +
-                "DueDate: $dueDate\n" +
-                "createdDate: $createdDate\n" +
-                "IsDone: $isDone\n" +
-                "DoneDate: $doneDate\n" +
+                "\tID: $id\n" +
+                "\tTitle: $title\n" +
+                "\tDescription: $description\n" +
+                "\tPriority: $priority\n" +
+                "\tDueDate: $dueDate\n" +
+                "\tcreatedDate: $createdDate\n" +
+                "\tIsDone: $isDone\n" +
+                "\tDoneDate: $doneDate\n" +
                 "}"
     }
 }
