@@ -31,9 +31,7 @@ class TodoDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edtTitle = view.findViewById(R.id.todoDetailFrag_title)
-        edtDescription = view.findViewById(R.id.todoDetailFrag_description)
-        btnSaveChanges = view.findViewById(R.id.todoDetailFrag_button_save)
+        initializeViews()
 
         mViewModel = ViewModelProvider(requireParentFragment()).get(TodoViewModel::class.java)
 
@@ -42,49 +40,43 @@ class TodoDetailFragment: Fragment() {
             edtDescription.setText(todo.description)
         })
 
+        initializeListeners()
+    }
+
+    /**
+     * Initialize all views this Fragment will show in the UI
+     */
+    private fun initializeViews() {
+        edtTitle = requireView().findViewById(R.id.todoDetailFrag_title)
+        edtDescription = requireView().findViewById(R.id.todoDetailFrag_description)
+        btnSaveChanges = requireView().findViewById(R.id.todoDetailFrag_button_save)
+    }
+
+    /**
+     * @sample btnSaveChanges           Listens to events to validate if user has changed title or descriptions
+     *                                  and either updates the corresponding todoo with the new updates or leave it
+     * @sample edtTitle                 Listens to events if user has changed title
+     * @sample edtDescription           Listens to events if user has changed description
+     */
+    private fun initializeListeners() {
         var edtTitleChanged = ""
-
-        edtTitle.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                edtTitleChanged = s.toString()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Nothing
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Nothing
-            }
-        })
-
         var edtDescriptionChanged = ""
-
-        edtDescription.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                edtDescriptionChanged = s.toString()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Nothing
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Nothing
-            }
-        })
 
         btnSaveChanges.setOnClickListener {
             mViewModel.selected.value!!.let {
+                // @edtTitleChanged and @edtDescriptionChanged will always have the same values of the original todoo at runtime
+                // until user has changed them
                 if (it.title != edtTitleChanged || it.description != edtDescriptionChanged) {
 
                     if (it.title != edtTitleChanged) {
                         Timber.i("Updating title [${it.title}] to [$edtTitleChanged]")
+
                         it.title = edtTitleChanged
                     }
 
                     if (it.description != edtDescriptionChanged) {
                         Timber.i("Updating description [${it.title}] to [$edtDescriptionChanged]")
+
                         it.description = edtDescriptionChanged
                     }
 
@@ -101,5 +93,34 @@ class TodoDetailFragment: Fragment() {
                 }
             }
         }
+
+        edtTitle.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                edtTitleChanged = s.toString()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+        })
+
+
+        edtDescription.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                edtDescriptionChanged = s.toString()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+        })
     }
 }

@@ -67,6 +67,9 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         initializeListeners()
     }
 
+    /**
+     * Represents all views this Fragment will show, and initializing them here
+     */
     private fun initializeViews() {
         title = requireView().findViewById(R.id.addfrag_title)
         description = requireView().findViewById(R.id.addFrag_description)
@@ -76,8 +79,14 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         selectDateBtn = requireView().findViewById(R.id.addFrag_button_select_date)
     }
 
+    /**
+     * All listeners that interacts with the views in this Fragment
+     * @sample selectDateBtn        Listens to events when user registering a new date and time for todo
+     * @sample dropdown             Listens to events when user choosing a priority from the dropdown-menu
+     * @sample cancelBtn            Listens to events when user cancelling new todo
+     * @sample finishBtn            Listens to events when user is done adding parameters for a new todoo and clicks on finish
+     */
     private fun initializeListeners() {
-        // Select date button listeners
         selectDateBtn.setOnClickListener { activateDateTimePicker() }
         selectDateBtn.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -85,15 +94,14 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Nothing
+                // Do nothing
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Nothing
+                // Do nothing
             }
         })
 
-        // Select priority listeners
         dropdown.setOnItemClickListener { _, _, position, _ -> setSelectedPriority(position) }
         dropdown.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -123,21 +131,18 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
                 builder
                     .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
-                        // Dismiss this fragment
                         dismiss()
-                    }
-                    .setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) { _, _ ->
+                    }.setNegativeButton(AlertUtil.NegativeAnswer.NO.answer) { _, _ ->
                         create.cancel()
                     }.show()
-
             } else {
                 dismiss()
             }
         }
 
-        // Create todo listener
         finishBtn.setOnClickListener {
             Timber.i("Validating fields...")
+
             if (isTitleValid() && isDescriptionValid() && isSelectedDateTimeValid() && isPrioritySet()) {
                 activateCreateTodo()
 
@@ -164,7 +169,8 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
             LocalDateTime.now()
         )
 
-        Timber.i("Inserting TODO $todo")
+        Timber.i("Inserting $todo")
+
         mViewModel.insert(todo)
     }
 
@@ -194,6 +200,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     private fun isTitleValid(): Boolean {
         if (title.text.isEmpty()) {
             Timber.i("Title is not valid..")
+
             title.error = "Title cannot be empty.."
             return false
         }
@@ -203,6 +210,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     private fun isDescriptionValid(): Boolean {
         if (description.text.isEmpty()) {
             Timber.i("Description is not validated..")
+
             title.error = "Description cannot be empty.."
             return false
         }
@@ -212,6 +220,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     private fun isSelectedDateTimeValid(): Boolean {
         if (addFrag_button_select_date.text == SELECT_DATE) {
             Timber.i("Datetime is not valid..")
+
             addFrag_button_select_date.error = "You must choose a priority.."
             return false
         }
@@ -221,6 +230,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
     private fun isPrioritySet(): Boolean {
         if (pickedPriority.isEmpty()) {
             Timber.i("Priority is not selected..")
+
             addFrag_layout_outlinedTextField_priority.error = "You must choose a priority.."
             return false
         }
@@ -229,6 +239,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
     override fun onBackPressed(): Boolean {
         Timber.i("Validating back button press..")
+
         if (parentFragmentManager.backStackEntryCount == 0) {
             if (childFragmentManager.backStackEntryCount > 0) {
                 val transaction = childFragmentManager.beginTransaction()

@@ -22,4 +22,16 @@ data class Todo(
     var isDone: Boolean = false
     @ColumnInfo(name = "done_date")
     var doneDate: LocalDateTime? = null
+    override fun toString(): String {
+        return "Todo with parameters: {\n" +
+                "ID: $id\n" +
+                "Title: $title\n" +
+                "Description: $description\n" +
+                "Priority: $priority\n" +
+                "DueDate: $dueDate\n" +
+                "createdDate: $createdDate\n" +
+                "IsDone: $isDone\n" +
+                "DoneDate: $doneDate\n" +
+                "}"
+    }
 }

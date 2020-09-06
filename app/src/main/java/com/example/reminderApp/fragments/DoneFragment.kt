@@ -14,6 +14,7 @@ import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
 import com.example.reminderApp.adapters.DoneTodoRecyclerViewAdapter
 import com.example.reminderApp.listeners.OnBackPressedListener
+import com.example.reminderApp.shortToast
 import com.example.reminderApp.utils.AlertUtil
 import timber.log.Timber
 
@@ -48,11 +49,16 @@ class DoneFragment : Fragment(), OnBackPressedListener {
     private fun activateClearList() {
         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
             .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
+                Timber.i("Deleting done todos: ${mViewModel.allDoneTodos.value}")
+
                 mViewModel.deleteAllDoneTodos()
                 mAdapter.notifyDataSetChanged()
+
+                shortToast("Cleared!")
             }
             .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ ->
                 dialog.dismiss()
+                shortToast("Canceled..")
             }
             .show()
     }
