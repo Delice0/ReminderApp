@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class DatabaseTest {
+    private val testObject = Todo("Test title", "Test desc", "Test priority", LocalDateTime.now(), LocalDateTime.now())
     private lateinit var db : TodoRoomDatabase
     private lateinit var todoDao : TodoDao
 
@@ -49,16 +50,32 @@ class DatabaseTest {
 
     @Test
     fun insertTest() = runBlocking {
-        // Create
-        val todo = Todo("Test title", "Test desc", "Test priority", LocalDateTime.now(), LocalDateTime.now())
-
         // Insert to DB
-        todoDao.insert(todo)
+        todoDao.insert(testObject)
 
         // Get from DB
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
         // Assert created object equals to object from DB
-        assertTrue(allItems.any { it.title == todo.title })
+        assertTrue(allItems.any { it == testObject })
+    }
+
+    @Test
+    fun deleteTest() = runBlocking {
+        todoDao.insert(testObject)
+
+        val allItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue(allItems.any { it == testObject})
+
+        // The test object does not autogenerate any ID thats why I apply the generated ID from Room to the object itself
+        testObject.apply { id = allItems[0].id}
+
+        todoDao.delete(testObject)
+
+        val refreshedAllItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${refreshedAllItems.size}",
+            refreshedAllItems.isEmpty())
     }
 }
