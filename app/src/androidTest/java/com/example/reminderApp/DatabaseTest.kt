@@ -107,6 +107,8 @@ class DatabaseTest {
     fun deleteAllTest() = runBlocking {
         val todoList = arrayOf(testObject, testObject, testObject, testObject, testObject)
 
+        todoList.forEach { x -> Timber.i("Inserting todo from list - $x") }
+
         todoDao.insert(*todoList)
 
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
@@ -129,15 +131,17 @@ class DatabaseTest {
         val doneTestObject = testObject.apply { isDone = true }
         val doneTestObject2 = testObject.apply { isDone = true }
 
-        val doneTodoList = arrayOf(doneTestObject, doneTestObject2)
+        val doneTodoObjectList = arrayOf(doneTestObject, doneTestObject2)
 
-        todoDao.insert(*doneTodoList)
+        doneTodoObjectList.forEach { x -> Timber.i("Inserting todo from list - $x") }
+
+        todoDao.insert(*doneTodoObjectList)
 
         val allDoneTodos = todoDao.getAllDoneTodos().getOrAwaitValue()
 
         assertTrue(
-            "No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneTodos.size}",
-            allDoneTodos.size == doneTodoList.size
+            "No items in DB: Expected [${doneTodoObjectList.size}, Actual [${allDoneTodos.size}",
+            allDoneTodos.size == doneTodoObjectList.size
         )
     }
 
@@ -165,7 +169,7 @@ class DatabaseTest {
     }
 
     private fun updateTestObjectID(generatedID: Long) {
-        Timber.i("Applying generated ID from database to $testObject")
+        Timber.i("Applying generated ID [$generatedID] from database to $testObject")
         testObject.apply { id = generatedID }
     }
 }
