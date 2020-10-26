@@ -9,17 +9,15 @@ import com.example.reminderApp.daos.TodoDao
 import com.example.reminderApp.database.TodoRoomDatabase
 import com.example.reminderApp.models.Todo
 import kotlinx.coroutines.runBlocking
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 import java.time.LocalDateTime
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class DatabaseTest {
+    private val testObject = Todo("Test title", "Test desc", "Test priority", LocalDateTime.now(), LocalDateTime.now())
     private lateinit var db : TodoRoomDatabase
     private lateinit var todoDao : TodoDao
 
@@ -49,16 +47,101 @@ class DatabaseTest {
 
     @Test
     fun insertTest() = runBlocking {
-        // Create
-        val todo = Todo("Test title", "Test desc", "Test priority", LocalDateTime.now(), LocalDateTime.now())
-
         // Insert to DB
-        todoDao.insert(todo)
+        insertSingleTestObjectToDB()
 
         // Get from DB
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
         // Assert created object equals to object from DB
-        assertTrue(allItems.any { it.title == todo.title })
+        assertTrue("Item has not been inserted to DB", allItems.any { it == testObject })
+    }
+
+    @Test
+    fun insertDoneTodos() = runBlocking {
+        todoDao.insert(testObject.apply { isDone = true })
+
+        val allItems = todoDao.getAllDoneTodos().getOrAwaitValue()
+
+        assertTrue("Item has not been set to done", allItems.any { it.isDone })
+    }
+
+    @Test
+    fun deleteTest() = runBlocking {
+        insertSingleTestObjectToDB()
+
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue(allTodos.any { it == testObject})
+
+        // The manual created test object does not autogenerate any ID thats why its ID is applied to the one in the database
+        updateTestObjectID(allTodos[0].id!!)
+
+        todoDao.delete(testObject)
+
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allTodos.size}",
+            allTodos.isEmpty())
+    }
+
+    @Test
+    fun deleteAllTest() = runBlocking {
+        val todoList = arrayOf(testObject, testObject, testObject, testObject, testObject)
+
+        todoDao.insert(*todoList)
+
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allTodos.size}]",
+            allTodos.size == 5)
+
+        todoDao.deleteAllTodos()
+
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("There is still todos in DB", allTodos.isEmpty())
+
+    }
+
+    @Test
+    fun deleteDoneTodosTest() = runBlocking {
+        val doneTestObject = testObject.apply { isDone = true }
+        val doneTestObject2 = testObject.apply { isDone = true }
+
+        val doneTodoList = arrayOf(doneTestObject, doneTestObject2)
+
+        todoDao.insert(*doneTodoList)
+
+        val allDoneTodos = todoDao.getAllDoneTodos().getOrAwaitValue()
+
+        assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneTodos.size}",
+        allDoneTodos.size == doneTodoList.size)
+    }
+
+    @Test
+    fun updateTest() = runBlocking {
+        insertSingleTestObjectToDB()
+
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue(allTodos.any { it == testObject})
+
+        updateTestObjectID(allTodos[0].id!!)
+
+        todoDao.update(testObject.apply { title = "Updated title" })
+
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Title is not updated: Expected [${testObject.title}], Actual [${allTodos[0].title}]",
+            allTodos.any { item -> item.title == testObject.title })
+    }
+
+    private fun insertSingleTestObjectToDB() = runBlocking{
+        todoDao.insert(testObject)
+    }
+
+    private fun updateTestObjectID(generatedID: Long) {
+        testObject.apply { id = generatedID }
     }
 }

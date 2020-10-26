@@ -81,7 +81,7 @@ class TodoDetailFragment: Fragment() {
                         it.description = edtDescriptionChanged
                     }
 
-                    mViewModel.update(it.id)
+                    mViewModel.update(it.id!!)
 
                     shortToast("Updated successfully!")
 

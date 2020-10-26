@@ -17,7 +17,7 @@ data class Todo(
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "todoId")
-    var id: Long = 0
+    var id: Long? = null
     @ColumnInfo(name = "is_done")
     var isDone: Boolean = false
     @ColumnInfo(name = "done_date")
