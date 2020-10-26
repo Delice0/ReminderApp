@@ -70,19 +70,19 @@ class DatabaseTest {
     fun deleteTest() = runBlocking {
         insertSingleTestObjectToDB()
 
-        var allItems = todoDao.getAllTodos().getOrAwaitValue()
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue(allItems.any { it == testObject})
+        assertTrue(allTodos.any { it == testObject})
 
         // The manual created test object does not autogenerate any ID thats why its ID is applied to the one in the database
-        updateTestObjectID(allItems[0].id!!)
+        updateTestObjectID(allTodos[0].id!!)
 
         todoDao.delete(testObject)
 
-        allItems = todoDao.getAllTodos().getOrAwaitValue()
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allItems.size}",
-            allItems.isEmpty())
+        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allTodos.size}",
+            allTodos.isEmpty())
     }
 
     @Test
@@ -91,16 +91,16 @@ class DatabaseTest {
 
         todoDao.insert(*todoList)
 
-        var allItems = todoDao.getAllTodos().getOrAwaitValue()
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allItems.size}]",
-            allItems.size == 5)
+        assertTrue("Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allTodos.size}]",
+            allTodos.size == 5)
 
         todoDao.deleteAllTodos()
 
-        allItems = todoDao.getAllTodos().getOrAwaitValue()
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("There is still todos in DB", allItems.isEmpty())
+        assertTrue("There is still todos in DB", allTodos.isEmpty())
 
     }
 
@@ -113,28 +113,28 @@ class DatabaseTest {
 
         todoDao.insert(*doneTodoList)
 
-        val allDoneItems = todoDao.getAllDoneTodos().getOrAwaitValue()
+        val allDoneTodos = todoDao.getAllDoneTodos().getOrAwaitValue()
 
-        assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneItems.size}",
-        allDoneItems.size == doneTodoList.size)
+        assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneTodos.size}",
+        allDoneTodos.size == doneTodoList.size)
     }
 
     @Test
     fun updateTest() = runBlocking {
         insertSingleTestObjectToDB()
 
-        var allItems = todoDao.getAllTodos().getOrAwaitValue()
+        var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue(allItems.any { it == testObject})
+        assertTrue(allTodos.any { it == testObject})
 
-        updateTestObjectID(allItems[0].id!!)
+        updateTestObjectID(allTodos[0].id!!)
 
         todoDao.update(testObject.apply { title = "Updated title" })
 
-        allItems = todoDao.getAllTodos().getOrAwaitValue()
+        allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Title is not updated: Expected [${testObject.title}], Actual [${allItems[0].title}]",
-            allItems.any { item -> item.title == testObject.title })
+        assertTrue("Title is not updated: Expected [${testObject.title}], Actual [${allTodos[0].title}]",
+            allTodos.any { item -> item.title == testObject.title })
     }
 
     private fun insertSingleTestObjectToDB() = runBlocking{
