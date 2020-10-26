@@ -34,12 +34,10 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insert(todo: Todo) = viewModelScope.launch(Dispatchers.IO) {
-        Timber.i("Inserting to database - $todo")
         repository.insert(todo)
     }
 
     fun delete(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        Timber.i("Deleting from database - ${repository.allTodos.value!![position]}")
         repository.delete(position)
     }
 
@@ -47,8 +45,8 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         repository.finish(id)
     }
 
-    fun update(id: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(id)
+    fun update(todo: Todo) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(todo)
     }
 
     fun deleteAllDoneTodos() = viewModelScope.launch(Dispatchers.IO) {

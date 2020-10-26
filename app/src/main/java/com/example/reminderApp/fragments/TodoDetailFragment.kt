@@ -70,18 +70,14 @@ class TodoDetailFragment: Fragment() {
                 if (it.title != edtTitleChanged || it.description != edtDescriptionChanged) {
 
                     if (it.title != edtTitleChanged) {
-                        Timber.i("Updating title [${it.title}] to [$edtTitleChanged]")
-
                         it.title = edtTitleChanged
                     }
 
                     if (it.description != edtDescriptionChanged) {
-                        Timber.i("Updating description [${it.title}] to [$edtDescriptionChanged]")
-
                         it.description = edtDescriptionChanged
                     }
 
-                    mViewModel.update(it.id!!)
+                    mViewModel.update(it)
 
                     shortToast("Updated successfully!")
 
