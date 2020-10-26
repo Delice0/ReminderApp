@@ -49,8 +49,6 @@ class DoneFragment : Fragment(), OnBackPressedListener {
     private fun activateClearList() {
         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
             .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
-                Timber.i("Deleting done todos: ${mViewModel.allDoneTodos.value}")
-
                 mViewModel.deleteAllDoneTodos()
                 mAdapter.notifyDataSetChanged()
 
