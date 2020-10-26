@@ -118,6 +118,25 @@ class DatabaseTest {
         assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneItems.size}",
         allDoneItems.size == doneTodoList.size)
     }
+
+    @Test
+    fun updateTest() = runBlocking {
+        insertSingleTestObjectToDB()
+
+        var allItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue(allItems.any { it == testObject})
+
+        updateTestObjectID(allItems[0].id!!)
+
+        todoDao.update(testObject.apply { title = "Updated title" })
+
+        allItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Title is not updated: Expected [${testObject.title}], Actual [${allItems[0].title}]",
+            allItems.any { item -> item.title == testObject.title })
+    }
+
     private fun insertSingleTestObjectToDB() = runBlocking{
         todoDao.insert(testObject)
     }
