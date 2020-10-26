@@ -85,6 +85,24 @@ class DatabaseTest {
             allItems.isEmpty())
     }
 
+    @Test
+    fun deleteAllTest() = runBlocking {
+        val todoList = arrayOf(testObject, testObject, testObject, testObject, testObject)
+
+        todoDao.insert(*todoList)
+
+        var allItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allItems.size}]",
+            allItems.size == 5)
+
+        todoDao.deleteAllTodos()
+
+        allItems = todoDao.getAllTodos().getOrAwaitValue()
+
+        assertTrue("There is still todos in DB", allItems.isEmpty())
+
+    }
 
     private fun insertSingleTestObjectToDB() = runBlocking{
         todoDao.insert(testObject)
