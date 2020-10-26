@@ -64,9 +64,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                     if (view.isChecked) {
                         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                             .setPositiveButton("YES") { _, _ ->
-                                Timber.i("Setting following todo to done: ${mViewModel.allTodos.value!![i].title}")
-
-                                mViewModel.finish(i)
+                                mViewModel.finish(mViewModel.allTodos.value!![i].id!!)
 
                                 mAdapter.notifyDataSetChanged()
 

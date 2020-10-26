@@ -1,13 +1,16 @@
 package com.example.reminderApp.ViewModels
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.reminderApp.database.TodoRoomDatabase
 import com.example.reminderApp.models.Todo
 import com.example.reminderApp.repositories.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import timber.log.Timber
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository
@@ -31,16 +34,17 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insert(todo: Todo) = viewModelScope.launch(Dispatchers.IO) {
+        Timber.i("Inserting to database - $todo")
         repository.insert(todo)
     }
 
     fun delete(position: Int) = viewModelScope.launch(Dispatchers.IO) {
+        Timber.i("Deleting from database - ${repository.allTodos.value!![position]}")
         repository.delete(position)
     }
 
-    fun finish(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        updateTodoToDone(position)
-        repository.finish(position)
+    fun finish(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.finish(id)
     }
 
     fun update(id: Long) = viewModelScope.launch(Dispatchers.IO) {
@@ -49,12 +53,5 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     fun deleteAllDoneTodos() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteDoneTodos()
-    }
-
-    private fun updateTodoToDone(position: Int) {
-        allTodos.value?.get(position).let {
-            it?.doneDate = LocalDateTime.now()
-            it?.isDone = true
-        }
     }
 }

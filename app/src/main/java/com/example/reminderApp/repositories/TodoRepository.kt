@@ -18,13 +18,8 @@ class TodoRepository(private val todoDao: TodoDao) {
         allTodos.value!![position].let { todoDao.delete(it) }
     }
 
-    suspend fun finish(position: Int) {
-        allTodos.value!![position].let {
-            it.doneDate = LocalDateTime.now()
-            it.isDone = true
-
-            todoDao.finish(it)
-        }
+    suspend fun finish(id: Long) {
+        todoDao.finish(id)
     }
 
     suspend fun update(id: Long) {
