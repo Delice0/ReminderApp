@@ -123,7 +123,6 @@ class DatabaseTest {
         allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue("There is still todos in DB", allTodos.isEmpty())
-
     }
 
     @Test
