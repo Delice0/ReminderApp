@@ -115,8 +115,6 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                     "Are you sure that you wanna delete this todo?")
 
                     .setPositiveButton("DELETE") { _, _ ->
-                        Timber.i("Deleting todo: ${mViewModel.allTodos.value!![viewHolder.adapterPosition]}")
-
                         mViewModel.delete(viewHolder.adapterPosition)
 
                         shortToast("Deleted!") }
