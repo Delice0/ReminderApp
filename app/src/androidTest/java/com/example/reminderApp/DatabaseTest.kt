@@ -9,11 +9,8 @@ import com.example.reminderApp.daos.TodoDao
 import com.example.reminderApp.database.TodoRoomDatabase
 import com.example.reminderApp.models.Todo
 import kotlinx.coroutines.runBlocking
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 import java.time.LocalDateTime
@@ -51,31 +48,49 @@ class DatabaseTest {
     @Test
     fun insertTest() = runBlocking {
         // Insert to DB
-        todoDao.insert(testObject)
+        insertSingleTestObjectToDB()
 
         // Get from DB
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
         // Assert created object equals to object from DB
-        assertTrue(allItems.any { it == testObject })
+        assertTrue("Item has not been inserted to DB", allItems.any { it == testObject })
+    }
+
+    @Test
+    fun insertDoneTodos() = runBlocking {
+        todoDao.insert(testObject.apply { isDone = true })
+
+        val allItems = todoDao.getAllDoneTodos().getOrAwaitValue()
+
+        assertTrue("Item has not been set to done", allItems.any { it.isDone })
     }
 
     @Test
     fun deleteTest() = runBlocking {
-        todoDao.insert(testObject)
+        insertSingleTestObjectToDB()
 
-        val allItems = todoDao.getAllTodos().getOrAwaitValue()
+        var allItems = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue(allItems.any { it == testObject})
 
-        // The test object does not autogenerate any ID thats why I apply the generated ID from Room to the object itself
-        testObject.apply { id = allItems[0].id}
+        // The manual created test object does not autogenerate any ID thats why its ID is applied to the one in the database
+        updateTestObjectID(allItems[0].id!!)
 
         todoDao.delete(testObject)
 
-        val refreshedAllItems = todoDao.getAllTodos().getOrAwaitValue()
+        allItems = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${refreshedAllItems.size}",
-            refreshedAllItems.isEmpty())
+        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allItems.size}",
+            allItems.isEmpty())
+    }
+
+
+    private fun insertSingleTestObjectToDB() = runBlocking{
+        todoDao.insert(testObject)
+    }
+
+    private fun updateTestObjectID(generatedID: Long) {
+        testObject.apply { id = generatedID }
     }
 }
