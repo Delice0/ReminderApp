@@ -104,6 +104,20 @@ class DatabaseTest {
 
     }
 
+    @Test
+    fun deleteDoneTodosTest() = runBlocking {
+        val doneTestObject = testObject.apply { isDone = true }
+        val doneTestObject2 = testObject.apply { isDone = true }
+
+        val doneTodoList = arrayOf(doneTestObject, doneTestObject2)
+
+        todoDao.insert(*doneTodoList)
+
+        val allDoneItems = todoDao.getAllDoneTodos().getOrAwaitValue()
+
+        assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneItems.size}",
+        allDoneItems.size == doneTodoList.size)
+    }
     private fun insertSingleTestObjectToDB() = runBlocking{
         todoDao.insert(testObject)
     }
