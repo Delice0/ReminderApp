@@ -9,7 +9,12 @@ class LocalDateTimeConverter {
         return if (dateString == null) {
             null
         } else {
-            LocalDateTime.parse(dateString)
+            var currentDateString = dateString
+
+            if (!dateString.contains("T")) {
+                currentDateString = dateString.substring(0, 10) + "T" + dateString.substring(11)
+            }
+            return LocalDateTime.parse(currentDateString)
         }
     }
 

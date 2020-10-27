@@ -4,28 +4,44 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.reminderApp.daos.TodoDao
 import com.example.reminderApp.database.TodoRoomDatabase
 import com.example.reminderApp.models.Todo
 import kotlinx.coroutines.runBlocking
-import org.junit.*
+import net.lachlanmckee.timberjunit.TimberTestRule
+import org.junit.After
 import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 import java.io.IOException
 import java.time.LocalDateTime
 
-@RunWith(AndroidJUnit4ClassRunner::class)
-class DatabaseTest {
-    private val testObject = Todo("Test title", "Test desc", "Test priority", LocalDateTime.now(), LocalDateTime.now())
-    private lateinit var db : TodoRoomDatabase
-    private lateinit var todoDao : TodoDao
 
+@RunWith(AndroidJUnit4::class)
+class DatabaseTest {
     // @InstantTaskExecutor rule tells the test that everything must be synchronized
-    // JvmField compiles this to java field (avoids stupid exceptions)
     @Rule
     @JvmField
     var rule = InstantTaskExecutorRule()
+
+    @Rule
+    @JvmField
+    var logAllAlwaysRule: TimberTestRule? = TimberTestRule.logAllAlways()
+
+    private lateinit var db: TodoRoomDatabase
+    private lateinit var todoDao: TodoDao
+
+    private val testObject = Todo(
+        "Test title",
+        "Test desc",
+        "Test priority",
+        LocalDateTime.now(),
+        LocalDateTime.now()
+    )
 
     @Before
     fun createDb() {
@@ -72,7 +88,7 @@ class DatabaseTest {
 
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue(allTodos.any { it == testObject})
+        assertTrue(allTodos.any { it == testObject })
 
         // The manual created test object does not autogenerate any ID thats why its ID is applied to the one in the database
         updateTestObjectID(allTodos[0].id!!)
@@ -81,8 +97,10 @@ class DatabaseTest {
 
         allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allTodos.size}",
-            allTodos.isEmpty())
+        assertTrue(
+            "Todo with ID [${testObject.id}] is not deleted as there is still objects in list: ${allTodos.size}",
+            allTodos.isEmpty()
+        )
     }
 
     @Test
@@ -93,15 +111,16 @@ class DatabaseTest {
 
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue("Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allTodos.size}]",
-            allTodos.size == 5)
+        assertTrue(
+            "Not all todos as has been inserted to DB: Expected [${todoList.size}], Actual [${allTodos.size}]",
+            allTodos.size == 5
+        )
 
         todoDao.deleteAllTodos()
 
         allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue("There is still todos in DB", allTodos.isEmpty())
-
     }
 
     @Test
@@ -109,14 +128,16 @@ class DatabaseTest {
         val doneTestObject = testObject.apply { isDone = true }
         val doneTestObject2 = testObject.apply { isDone = true }
 
-        val doneTodoList = arrayOf(doneTestObject, doneTestObject2)
+        val doneTodoObjectList = arrayOf(doneTestObject, doneTestObject2)
 
-        todoDao.insert(*doneTodoList)
+        todoDao.insert(*doneTodoObjectList)
 
         val allDoneTodos = todoDao.getAllDoneTodos().getOrAwaitValue()
 
-        assertTrue("No items in DB: Expected [${doneTodoList.size}, Actual [${allDoneTodos.size}",
-        allDoneTodos.size == doneTodoList.size)
+        assertTrue(
+            "No items in DB: Expected [${doneTodoObjectList.size}, Actual [${allDoneTodos.size}",
+            allDoneTodos.size == doneTodoObjectList.size
+        )
     }
 
     @Test
@@ -125,7 +146,7 @@ class DatabaseTest {
 
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
-        assertTrue(allTodos.any { it == testObject})
+        assertTrue(allTodos.any { it == testObject })
 
         updateTestObjectID(allTodos[0].id!!)
 
@@ -137,7 +158,7 @@ class DatabaseTest {
             allTodos.any { item -> item.title == testObject.title })
     }
 
-    private fun insertSingleTestObjectToDB() = runBlocking{
+    private fun insertSingleTestObjectToDB() = runBlocking {
         todoDao.insert(testObject)
     }
 

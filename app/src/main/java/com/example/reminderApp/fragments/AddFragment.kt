@@ -172,8 +172,6 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
             LocalDateTime.now()
         )
 
-        Timber.i("Inserting $todo")
-
         mViewModel.insert(todo)
     }
 

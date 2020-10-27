@@ -19,12 +19,11 @@ interface TodoDao {
     @Delete
     fun delete(todo: Todo)
 
-    @Ignore // TODO REMOVE?
     @Query("SELECT * FROM todo_table WHERE is_done = 1")
     fun getAllDoneTodos(): LiveData<List<Todo>>
 
-    @Update
-    suspend fun finish(todo: Todo)
+    @Query("UPDATE todo_table SET is_done = 1,  done_date = CURRENT_TIMESTAMP WHERE todoId = :id")
+    suspend fun finish(id: Long)
 
     @Update
     suspend fun update(todo: Todo)
