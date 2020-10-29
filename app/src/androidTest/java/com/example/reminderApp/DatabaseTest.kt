@@ -56,7 +56,6 @@ class DatabaseTest {
     }
 
     @After
-    @Throws(IOException::class)
     fun closeDb() {
         db.close()
     }
@@ -69,8 +68,10 @@ class DatabaseTest {
         // Get from DB
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
+        val todo = Todo("fail", "failing", "fail", LocalDateTime.now(), LocalDateTime.now())
+        
         // Assert created object equals to object from DB
-        assertTrue("Item has not been inserted to DB", allItems.any { it == testObject.apply { it.isDone } }) // TODO REMEMBER TO REVERT
+        assertTrue("Item has not been inserted to DB", allItems.any { it == todo }) // TODO REMEMBER TO REVERT
     }
 
     @Test
