@@ -70,7 +70,7 @@ class DatabaseTest {
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
         // Assert created object equals to object from DB
-        assertTrue("Item has not been inserted to DB", allItems.any { it == testObject })
+        assertTrue("Item has not been inserted to DB", allItems.any { it == testObject.apply { it.isDone } }) // TODO REMEMBER TO REVERT
     }
 
     @Test
