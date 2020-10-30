@@ -20,6 +20,7 @@ import org.junit.runner.RunWith
 import timber.log.Timber
 import java.io.IOException
 import java.time.LocalDateTime
+import java.util.logging.Logger
 
 
 @RunWith(AndroidJUnit4::class)
@@ -148,6 +149,8 @@ class DatabaseTest {
         insertSingleTestObjectToDB()
 
         Log.i("MYTAG", "LOG TEST")
+        val logger = Logger.getLogger(this@DatabaseTest::class.java.toString())
+        logger.info("LOGGER TEST")
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue(allTodos.any { it == testObject })
