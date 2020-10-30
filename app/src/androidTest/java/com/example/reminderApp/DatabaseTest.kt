@@ -1,6 +1,7 @@
 package com.example.reminderApp
 
 import android.content.Context
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -146,6 +147,7 @@ class DatabaseTest {
     fun updateTest() = runBlocking {
         insertSingleTestObjectToDB()
 
+        Log.i("MYTAG", "LOG TEST")
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue(allTodos.any { it == testObject })
