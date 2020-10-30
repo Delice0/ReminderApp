@@ -65,6 +65,7 @@ class DatabaseTest {
         // Insert to DB
         insertSingleTestObjectToDB()
 
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         // Get from DB
         val allItems = todoDao.getAllTodos().getOrAwaitValue()
 
@@ -79,14 +80,14 @@ class DatabaseTest {
         todoDao.insert(testObject.apply { isDone = true })
 
         val allItems = todoDao.getAllDoneTodos().getOrAwaitValue()
-
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         assertTrue("Item has not been set to done", allItems.any { it.isDone })
     }
 
     @Test
     fun deleteTest() = runBlocking {
         insertSingleTestObjectToDB()
-
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue(allTodos.any { it == testObject })
@@ -107,7 +108,7 @@ class DatabaseTest {
     @Test
     fun deleteAllTest() = runBlocking {
         val todoList = arrayOf(testObject, testObject, testObject, testObject, testObject)
-
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         todoDao.insert(*todoList)
 
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
@@ -130,7 +131,7 @@ class DatabaseTest {
         val doneTestObject2 = testObject.apply { isDone = true }
 
         val doneTodoObjectList = arrayOf(doneTestObject, doneTestObject2)
-
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         todoDao.insert(*doneTodoObjectList)
 
         val allDoneTodos = todoDao.getAllDoneTodos().getOrAwaitValue()
@@ -148,7 +149,7 @@ class DatabaseTest {
         var allTodos = todoDao.getAllTodos().getOrAwaitValue()
 
         assertTrue(allTodos.any { it == testObject })
-
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         updateTestObjectID(allTodos[0].id!!)
 
         todoDao.update(testObject.apply { title = "Updated title" })
@@ -160,10 +161,12 @@ class DatabaseTest {
     }
 
     private fun insertSingleTestObjectToDB() = runBlocking {
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         todoDao.insert(testObject)
     }
 
     private fun updateTestObjectID(generatedID: Long) {
+        Timber.i("TEEEEEEEEEEEEEEEEEEEEEEEEEST")
         testObject.apply { id = generatedID }
     }
 }
