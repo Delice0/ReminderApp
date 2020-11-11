@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Handle back-button pressed for childfragments
+     * Handle back-button pressed for fragments and their children
      */
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments
@@ -114,9 +114,7 @@ class MainActivity : AppCompatActivity() {
         var handled = false
         for (fragment in fragmentList) {
             when(fragment) {
-                is TodoFragment -> {
-                    handled = fragment.onBackPressed()
-                }
+                is TodoFragment -> { handled = fragment.onBackPressed() }
                 is DoneFragment -> { handled = fragment.onBackPressed() }
             }
         }
