@@ -15,9 +15,9 @@ class TodoRepository(private val todoDao: TodoDao) {
         todoDao.insert(todo)
     }
 
-    fun delete(position: Int) {
-        Timber.i("Deleting from database - ${allTodos.value!![position]}")
-        allTodos.value!![position].let { todoDao.delete(it) }
+    fun delete(todo: Todo) {
+        Timber.i("Deleting from database - ${allTodos.value!!.stream().filter { it == todo }.findFirst().get()}")
+        todoDao.delete(todo)
     }
 
     suspend fun finish(id: Long) {
