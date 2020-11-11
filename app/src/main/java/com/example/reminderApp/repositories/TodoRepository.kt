@@ -21,7 +21,7 @@ class TodoRepository(private val todoDao: TodoDao) {
     }
 
     suspend fun finish(id: Long) {
-        Timber.i("Setting todo to finish - ${allTodos.value!![id.toInt()]}")
+        Timber.i("Setting todo to finish - ${allTodos.value!!.stream().filter { it.id == id }.findFirst().get()}")
         todoDao.finish(id)
     }
 
