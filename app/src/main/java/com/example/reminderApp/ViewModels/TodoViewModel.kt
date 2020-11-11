@@ -10,7 +10,6 @@ import com.example.reminderApp.models.Todo
 import com.example.reminderApp.repositories.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository
