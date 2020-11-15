@@ -49,10 +49,14 @@ class DoneFragment : Fragment(), OnBackPressedListener {
     private fun activateClearList() {
         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Clear list?")
             .setPositiveButton(AlertUtil.PositiveAnswer.YES.answer) { _, _ ->
-                mViewModel.deleteAllDoneTodos()
-                mAdapter.notifyDataSetChanged()
+                if (!mViewModel.allDoneTodos.value.isNullOrEmpty()) {
+                    mViewModel.deleteAllDoneTodos()
+                    mAdapter.notifyDataSetChanged()
 
-                shortToast("Cleared!")
+                    shortToast("Cleared!")
+                } else {
+                    shortToast("There is nothing to clear!")
+                }
             }
             .setNegativeButton(AlertUtil.NegativeAnswer.CANCEL.answer) { dialog, _ ->
                 dialog.dismiss()
