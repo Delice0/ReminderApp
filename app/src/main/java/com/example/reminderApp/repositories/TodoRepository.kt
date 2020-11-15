@@ -15,13 +15,13 @@ class TodoRepository(private val todoDao: TodoDao) {
         todoDao.insert(todo)
     }
 
-    fun delete(position: Int) {
-        Timber.i("Deleting from database - ${allTodos.value!![position]}")
-        allTodos.value!![position].let { todoDao.delete(it) }
+    fun delete(todo: Todo) {
+        Timber.i("Deleting from database - ${allTodos.value!!.stream().filter { it == todo }.findFirst().get()}")
+        todoDao.delete(todo)
     }
 
     suspend fun finish(id: Long) {
-        Timber.i("Setting todo to finish - ${allTodos.value!![id.toInt()]}")
+        Timber.i("Setting todo to finish - ${allTodos.value!!.stream().filter { it.id == id }.findFirst().get()}")
         todoDao.finish(id)
     }
 

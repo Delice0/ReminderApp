@@ -44,7 +44,7 @@ class TodoFragment : Fragment(), OnBackPressedListener {
         mViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
 
         // Observe all todos and add them to the view
-        mViewModel.allTodos.observe(viewLifecycleOwner, Observer {
+        mViewModel.allTodos.observe(viewLifecycleOwner, {
             it.let {
                 mAdapter.setTodos(it)
 
@@ -56,12 +56,13 @@ class TodoFragment : Fragment(), OnBackPressedListener {
             }
         })
 
-        mAdapter.itemClicked(TodoItemListener { view, i ->
-            when (view) {
+        mAdapter.itemClicked(TodoItemListener { itemView, i ->
+            when (itemView) {
+                // If clicked is the checkbox
                 recyclerView.findViewHolderForAdapterPosition(i)!!.itemView.todo_custom_checkbox -> {
-                    view as CheckBox
+                    itemView as CheckBox
 
-                    if (view.isChecked) {
+                    if (itemView.isChecked) {
                         AlertUtil.buildAlertPopup(requireView(), AlertUtil.Titles.CONFIRMATION.title, "Done?")
                             .setPositiveButton("YES") { _, _ ->
                                 mViewModel.finish(mViewModel.allTodos.value!![i].id!!)
@@ -72,13 +73,14 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                             .setNegativeButton("CANCEL") { _, _ ->
                                 Timber.i("Cancelled..")
 
-                                view.isChecked = false
+                                itemView.isChecked = false
 
                                 shortToast("Cancelled..") }
                             .setCancelable(false)
                             .show()
                     }
                 }
+                //If clicked item is the item itself
                 recyclerView.findViewHolderForAdapterPosition(i)!!.itemView -> {
                     val todoDetailFragment = TodoDetailFragment()
 
@@ -115,7 +117,9 @@ class TodoFragment : Fragment(), OnBackPressedListener {
                     "Are you sure that you wanna delete this todo?")
 
                     .setPositiveButton("DELETE") { _, _ ->
-                        mViewModel.delete(viewHolder.adapterPosition)
+                        val allTodos = mViewModel.allTodos.value!!
+
+                        mViewModel.delete(allTodos[viewHolder.adapterPosition])
 
                         shortToast("Deleted!") }
                     .setNegativeButton("CANCEL") { _, _ ->

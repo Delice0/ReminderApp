@@ -21,6 +21,7 @@ abstract class TodoRoomDatabase : RoomDatabase() {
         fun getDatabase(context: Context): TodoRoomDatabase {
             val tempInstance = INSTANCE
 
+            // Will always be null first time database is initialized
             if (tempInstance != null) {
                 return tempInstance
             }

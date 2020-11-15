@@ -22,7 +22,7 @@ interface TodoDao {
     @Query("SELECT * FROM todo_table WHERE is_done = 1")
     fun getAllDoneTodos(): LiveData<List<Todo>>
 
-    @Query("UPDATE todo_table SET is_done = 1,  done_date = CURRENT_TIMESTAMP WHERE todoId = :id")
+    @Query("UPDATE todo_table SET is_done = 1, done_date = CURRENT_TIMESTAMP WHERE todoId = :id")
     suspend fun finish(id: Long)
 
     @Update

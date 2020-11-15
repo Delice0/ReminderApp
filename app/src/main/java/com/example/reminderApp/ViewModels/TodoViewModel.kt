@@ -10,7 +10,6 @@ import com.example.reminderApp.models.Todo
 import com.example.reminderApp.repositories.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository
@@ -37,8 +36,8 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         repository.insert(todo)
     }
 
-    fun delete(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(position)
+    fun delete(todo: Todo) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(todo)
     }
 
     fun finish(id: Long) = viewModelScope.launch(Dispatchers.IO) {

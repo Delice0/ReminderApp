@@ -9,13 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
-import com.example.reminderApp.models.Todo
 import com.example.reminderApp.shortToast
-import timber.log.Timber
 
 class TodoDetailFragment: Fragment() {
     private lateinit var mViewModel: TodoViewModel
@@ -36,7 +33,7 @@ class TodoDetailFragment: Fragment() {
 
         mViewModel = ViewModelProvider(requireParentFragment()).get(TodoViewModel::class.java)
 
-        mViewModel.selected.observe(viewLifecycleOwner, Observer<Todo> { todo ->
+        mViewModel.selected.observe(viewLifecycleOwner, { todo ->
             edtTitle.setText(todo.title)
             edtDescription.setText(todo.description)
         })
