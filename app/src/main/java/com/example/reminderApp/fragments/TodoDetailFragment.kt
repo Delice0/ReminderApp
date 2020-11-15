@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -14,7 +15,7 @@ import com.example.reminderApp.R
 import com.example.reminderApp.ViewModels.TodoViewModel
 import com.example.reminderApp.shortToast
 
-class TodoDetailFragment: Fragment() {
+class TodoDetailFragment : Fragment() {
     private lateinit var mViewModel: TodoViewModel
 
     // Views
@@ -22,7 +23,17 @@ class TodoDetailFragment: Fragment() {
     private lateinit var edtDescription: EditText
     private lateinit var btnSaveChanges: Button
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_todo_detail, container, false)
     }
 
@@ -40,6 +51,24 @@ class TodoDetailFragment: Fragment() {
 
         initializeListeners()
     }
+
+    /**
+     * Disable searchview for this child fragment
+     */
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        val searchViewItem = menu.findItem(R.id.menu_search)
+
+        if (searchViewItem.isVisible) {
+            searchViewItem.isVisible = false
+        }
+
+        if (searchViewItem.isActionViewExpanded) {
+            searchViewItem.collapseActionView()
+        }
+    }
+
 
     /**
      * Initialize all views this Fragment will show in the UI
@@ -103,7 +132,7 @@ class TodoDetailFragment: Fragment() {
         })
 
 
-        edtDescription.addTextChangedListener(object : TextWatcher{
+        edtDescription.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 edtDescriptionChanged = s.toString()
             }
