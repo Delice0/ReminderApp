@@ -9,28 +9,27 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:text="Create a TODO"
         android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.060000002" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/addFrag_layout_outlinedTextField_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:hint="Title"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.057">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addfrag_title"
@@ -45,22 +44,21 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="125dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:hint="Description"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_title"
-        app:layout_constraintVertical_bias="0.120000005">
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addFrag_description"
             android:layout_width="match_parent"
-            android:inputType="textMultiLine"
+            android:layout_height="match_parent"
             android:gravity="start"
-            android:isScrollContainer="true"
-            android:layout_height="match_parent" />
+            android:inputType="textMultiLine"
+            android:isScrollContainer="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,14 +66,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:hint="Priority"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/addFrag_layout_outlinedTextField_description"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/addFrag_button_select_date"
-        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_description"
-        app:layout_constraintVertical_bias="0.18">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_button_select_date">
 
         <AutoCompleteTextView
             android:id="@+id/addFrag_dropdown_priority"
@@ -91,40 +86,35 @@
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="Select date"
-        android:layout_marginRight="10dp"
         app:icon="@drawable/image_calendar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/addFrag_layout_outlinedTextField_description"
-        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_description"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_description" />
 
     <Button
         android:id="@+id/addFrag_button_create_todo"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginEnd="15dp"
         android:text="Finish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/addFrag_layout_outlinedTextField_priority"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="@+id/addFrag_button_select_date"
-        app:layout_constraintTop_toBottomOf="@+id/addFrag_button_select_date"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addFrag_button_cancel" />
 
     <Button
         android:id="@+id/addFrag_button_cancel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addFrag_button_create_todo"
-        app:layout_constraintStart_toStartOf="@+id/addFrag_button_select_date"
-        app:layout_constraintTop_toBottomOf="@+id/addFrag_button_select_date"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_layout_outlinedTextField_priority" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
