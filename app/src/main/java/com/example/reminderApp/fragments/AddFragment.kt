@@ -183,7 +183,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         val startHour = instance.get(Calendar.HOUR_OF_DAY)
         val startMinute = instance.get(Calendar.MINUTE)
 
-        val datePicker = DatePickerDialog(requireContext(), { _, year, month, day ->
+        val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
             TimePickerDialog(requireContext(), { _, hour, minute ->
                 pickedDateTime =
                     LocalDateTime.of(
@@ -205,10 +205,10 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
             }, startHour, startMinute, true).show()
         }, startYear, startMonth, startDay)
 
-        datePicker.datePicker
+        datePickerDialog.datePicker
             .minDate = System.currentTimeMillis()
 
-        datePicker.show()
+        datePickerDialog.show()
     }
 
     private fun isTitleValid(): Boolean {
