@@ -10,7 +10,7 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg todo: Todo)
 
-    @Query("SELECT * FROM todo_table WHERE is_done = 0 ORDER BY CASE priority WHEN 'low' THEN 3 WHEN 'medium' THEN 2 WHEN 'high' THEN 1 END, due_date ASC")
+    @Query("SELECT * FROM todo_table WHERE is_done = 0 ORDER BY due_date ASC, CASE priority WHEN 'low' THEN 3 WHEN 'medium' THEN 2 WHEN 'high' THEN 1 END")
     fun getAllTodos(): LiveData<List<Todo>>
 
     @Query("DELETE FROM todo_table")

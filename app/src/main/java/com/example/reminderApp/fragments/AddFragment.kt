@@ -153,7 +153,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
                 shortToast("Created todo!")
             } else {
-                shortToast("Remember to fill out fields!")
+                shortToast("Remember to fill out all fields!")
             }
         }
     }
@@ -183,8 +183,8 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         val startHour = instance.get(Calendar.HOUR_OF_DAY)
         val startMinute = instance.get(Calendar.MINUTE)
 
-        DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+        val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
+            TimePickerDialog(requireContext(), { _, hour, minute ->
                 pickedDateTime =
                     LocalDateTime.of(
                         year,
@@ -193,9 +193,22 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
                         hour,
                         minute
                     )
-                addFrag_button_select_date.text = pickedDateTime.format(DateUtil.dateTimeFormat)
+
+                if (pickedDateTime.dayOfMonth == startDay && pickedDateTime.hour < startHour) {
+                    shortToast("You are not allowed to specify an earlier time!")
+
+                    selectDateBtn.error = "Select valid date and time"
+                    selectDateBtn.text = SELECT_DATE
+                } else {
+                    selectDateBtn.text = pickedDateTime.format(DateUtil.dateTimeFormat)
+                }
             }, startHour, startMinute, true).show()
-        }, startYear, startMonth, startDay).show()
+        }, startYear, startMonth, startDay)
+
+        datePickerDialog.datePicker
+            .minDate = System.currentTimeMillis()
+
+        datePickerDialog.show()
     }
 
     private fun isTitleValid(): Boolean {
@@ -220,9 +233,9 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
 
     private fun isSelectedDateTimeValid(): Boolean {
         if (addFrag_button_select_date.text == SELECT_DATE) {
-            Timber.i("Datetime is not valid..")
+            Timber.i("Datetime has not been set..")
 
-            addFrag_button_select_date.error = "You must choose a priority.."
+            addFrag_button_select_date.error = "You must select a date and time"
             return false
         }
         return true
@@ -232,7 +245,7 @@ class AddFragment : DialogFragment(), OnBackPressedListener {
         if (pickedPriority.isEmpty()) {
             Timber.i("Priority is not selected..")
 
-            addFrag_layout_outlinedTextField_priority.error = "You must choose a priority.."
+            addFrag_layout_outlinedTextField_priority.error = "You must choose a priority"
             return false
         }
         return true
